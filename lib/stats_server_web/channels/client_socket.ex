@@ -2,7 +2,7 @@ defmodule StatsServerWeb.ClientSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", StatsServerWeb.RoomChannel
+  channel "client", StatsServerWeb.ClientChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
