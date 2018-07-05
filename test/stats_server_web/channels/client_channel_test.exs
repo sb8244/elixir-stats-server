@@ -10,8 +10,4 @@ defmodule StatsServerWeb.ClientChannelTest do
         |> subscribe_and_join(ClientChannel, "client", %{})
     end
   end
-
-  describe "handle_in dispatch_command" do
-    test "placeholder"
-  end
 end
