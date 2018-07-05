@@ -7,8 +7,8 @@ defmodule StatsServerWeb.ClientSocket do
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
 
-  def connect(%{"secret" => secret}, socket) do
-    if secret == StatsServer.Config.client_socket_authentication_secret() do
+  def connect(%{"token" => token}, socket) do
+    if token == StatsServer.Config.client_socket_authentication_secret() do
       {:ok, socket}
     else
       :error

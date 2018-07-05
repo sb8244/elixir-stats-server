@@ -5,11 +5,11 @@ defmodule StatsServerWeb.ClientSocketTest do
 
   describe "authentication" do
     test "a authentication secret can be used to connect" do
-      {:ok, %Phoenix.Socket{id: "client_socket"}} = connect(ClientSocket, %{"secret" => "testing"})
+      {:ok, %Phoenix.Socket{id: "client_socket"}} = connect(ClientSocket, %{"token" => "testing"})
     end
 
     test "an invalid authentication secret is an error" do
-      :error = connect(ClientSocket, %{"secret" => "nope"})
+      :error = connect(ClientSocket, %{"token" => "nope"})
     end
   end
 end
