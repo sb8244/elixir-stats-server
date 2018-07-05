@@ -14,6 +14,9 @@ config :stats_server, StatsServerWeb.Endpoint,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
                     cd: Path.expand("../assets", __DIR__)]]
 
+config :stats_server, StatsServer.Config,
+  client_socket_authentication_secret: "dev"
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
