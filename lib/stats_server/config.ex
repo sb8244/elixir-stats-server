@@ -3,6 +3,10 @@ defmodule StatsServer.Config do
     config()[:client_socket_authentication_secret] || System.get_env("CLIENT_SOCKET_AUTHENTICATION_SECRET")
   end
 
+  def server_socket_authentication_secret do
+    config()[:server_socket_authentication_secret] || System.get_env("SERVER_SOCKET_AUTHENTICATION_SECRET")
+  end
+
   def application_names do
     config()[:application_names] || []
   end

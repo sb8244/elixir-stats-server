@@ -9,7 +9,7 @@ defmodule StatsServerWeb.ClientSocketTest do
     end
 
     test "an invalid authentication secret is an error" do
-      :error = connect(ClientSocket, %{"token" => "nope"})
+      :error = connect(ClientSocket, %{"token" => StatsServer.Config.server_socket_authentication_secret()})
     end
   end
 end

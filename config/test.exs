@@ -8,6 +8,7 @@ config :stats_server, StatsServerWeb.Endpoint,
 
 config :stats_server, StatsServer.Config,
   client_socket_authentication_secret: "testing",
+  server_socket_authentication_secret: "server_testing",
   application_names: ["Test", "Other Test"]
 
 # Print only warnings and errors during test
