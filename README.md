@@ -15,7 +15,7 @@ No APM right now allows things like "give me a process list". Collecting this ac
 
 - [ ] JS client sends encrypted command (client: [application_name, encrypted_command, command_id]) to client websocket
 - [x] Client websocket sends a message to the server channel topic (server:application_id: [command_id, encrypted_command])
-- [ ] Server websocket listens to the channel topic to broadcast out to the connected socket
+- [x] Server websocket listens to the channel topic to broadcast out to the connected socket
 - [ ] Server channel is processed by each connected server, sends data back over the server channel
 - [ ] Data received on server channel is sent to client (client: [command_id, encrypted_response, application_name, server_id])
 
