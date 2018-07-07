@@ -2,7 +2,7 @@ defmodule StatsServerWeb.ServerSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel("server", StatsServerWeb.ServerChannel)
+  channel("server:*", StatsServerWeb.ServerChannel)
 
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket)
