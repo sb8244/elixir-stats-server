@@ -12,3 +12,5 @@ config :stats_server, StatsServer.Config,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :mockery, history: true
