@@ -15,7 +15,8 @@ config :stats_server, StatsServerWeb.Endpoint,
                     cd: Path.expand("../assets", __DIR__)]]
 
 config :stats_server, StatsServer.Config,
-  client_socket_authentication_secret: "dev"
+  client_socket_authentication_secret: "dev",
+  application_names: ["Dev", "Other Dev"]
 
 # ## SSL Support
 #

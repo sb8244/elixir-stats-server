@@ -6,7 +6,6 @@ defmodule StatsServer.Application do
 
     children = [
       supervisor(StatsServerWeb.Endpoint, []),
-      {Registry, keys: :unique, name: StatsServer.Collector.Server.registry_name()}
     ]
 
     opts = [strategy: :one_for_one, name: StatsServer.Supervisor]
