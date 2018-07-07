@@ -16,6 +16,7 @@ defmodule StatsServerWeb.ClientChannel do
       command_id: id,
       encrypted_command: command
     }
+
     StatsServerWeb.Endpoint.broadcast("server:#{app_name}", "dispatch_command", server_params)
 
     {:reply, {:ok, %{}}, socket}

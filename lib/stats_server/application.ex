@@ -5,7 +5,7 @@ defmodule StatsServer.Application do
     import Supervisor.Spec
 
     children = [
-      supervisor(StatsServerWeb.Endpoint, []),
+      supervisor(StatsServerWeb.Endpoint, [])
     ]
 
     opts = [strategy: :one_for_one, name: StatsServer.Supervisor]

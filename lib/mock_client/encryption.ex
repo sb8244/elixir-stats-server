@@ -26,8 +26,10 @@ defmodule MockClient.Encryption do
 
   defp unpad_message(msg) do
     padding_size = :binary.last(msg)
+
     if padding_size <= 16 do
       msg_size = byte_size(msg)
+
       if binary_part(msg, msg_size, -padding_size) == :binary.copy(<<padding_size>>, padding_size) do
         {:ok, binary_part(msg, 0, msg_size - padding_size)}
       else

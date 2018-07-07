@@ -2,10 +2,10 @@ defmodule StatsServerWeb.ServerSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "client", StatsServerWeb.ClientChannel
+  channel("client", StatsServerWeb.ClientChannel)
 
   ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
+  transport(:websocket, Phoenix.Transports.WebSocket)
 
   def connect(%{"application_name" => app_name, "token" => token}, socket) do
     if token == StatsServer.Config.server_socket_authentication_secret() do
