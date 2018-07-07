@@ -17,6 +17,15 @@ defmodule StatsServerWeb.ClientChannelTest do
     end
   end
 
+  describe "handle_out collect_results" do
+    test "the socket is pushed the results" do
+      socket = start_socket()
+      payload = %{application_name: "test", command_id: "a", encrypted_response: "b", server_id: "c"}
+      broadcast_from!(socket, "collect_results", payload)
+      assert_push("collect_results", ^payload)
+    end
+  end
+
   describe "handle_in application_names" do
     test "the application names are returned" do
       ref = push(start_socket(), "application_names", %{})

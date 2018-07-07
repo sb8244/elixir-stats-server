@@ -3,8 +3,16 @@ defmodule StatsServerWeb.ClientChannel do
 
   alias StatsServer.Config
 
+  intercept(["collect_results"])
+
   def join("client", _message, socket) do
     {:ok, socket}
+  end
+
+  def handle_out("collect_results", payload = %{application_name: _, command_id: _, encrypted_response: _, server_id: _}, socket) do
+    push(socket, "collect_results", payload)
+
+    {:noreply, socket}
   end
 
   def handle_in("application_names", _payload, socket) do
