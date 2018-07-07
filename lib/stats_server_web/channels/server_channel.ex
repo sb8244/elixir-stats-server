@@ -16,4 +16,21 @@ defmodule StatsServerWeb.ServerChannel do
 
     {:noreply, socket}
   end
+
+  def handle_in(
+        "collect_results",
+        %{"command_id" => id, "encrypted_response" => resp, "server_id" => server_id},
+        socket = %{assigns: %{application_name: app_name}}
+      ) do
+    payload = %{
+      application_name: app_name,
+      command_id: id,
+      encrypted_response: resp,
+      server_id: server_id
+    }
+
+    StatsServerWeb.Endpoint.broadcast("client", "collect_results", payload)
+
+    {:reply, {:ok, %{}}, socket}
+  end
 end
