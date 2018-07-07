@@ -2,6 +2,7 @@ defmodule StatsServerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :stats_server
 
   socket("/client_socket", StatsServerWeb.ClientSocket)
+  socket("/server_socket", StatsServerWeb.ServerSocket)
 
   # Serve at "/" the static files from "priv/static" directory.
   #
