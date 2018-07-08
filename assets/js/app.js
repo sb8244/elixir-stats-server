@@ -1,4 +1,13 @@
 import { Socket } from 'phoenix'
+import { encryptPayload, decryptPayload } from './encryption'
+
+[
+  "cHvxhUgY3E5io6J5VJD6Tg==--l+ejr1hNt6E7v7g5PTDzfg=="
+].forEach((data) => {
+  console.log(decryptPayload(data))
+})
+
+console.log(decryptPayload(encryptPayload('memory|530M')))
 
 const socket = new Socket('/client_socket', { params: { token: 'dev' } })
 
