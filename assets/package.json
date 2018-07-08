@@ -4,7 +4,7 @@
   "scripts": {
     "build": "webpack --mode=development",
     "deploy": "webpack --mode=production",
-    "watch": "webpack --watch-stdin --progress --color"
+    "watch": "webpack --watch-stdin --progress --color --mode=development"
   },
   "dependencies": {
     "aes-js": "^3.1.1",
