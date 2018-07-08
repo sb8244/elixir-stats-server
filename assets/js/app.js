@@ -28,7 +28,7 @@ channel.join()
   .receive('timeout', () => console.log('Networking issue. Still waiting...'))
 
 channel.on('collect_results', (evt) => {
-  console.log('[client] collect_results', evt)
+  console.log('[client] collect_results', evt, 'decryptedResponse=', decryptPayload(evt.encrypted_response))
 })
 
 const serverSocket = new Socket('/server_socket', { params: { application_name: "Test", token: 'server_dev' } })
@@ -42,10 +42,20 @@ serverChannel.join()
   .receive('timeout', () => console.log('Networking issue. Still waiting...'))
 
 serverChannel.on('dispatch_command', (evt) => {
-  console.log('[server] dispatch_command', evt)
-  serverChannel.push('collect_results', {command_id: evt.command_id, encrypted_response: 'response', server_id: 'js test'})
+  console.log('[server] dispatch_command', evt, 'decryptedPayload=', decryptPayload(evt.encrypted_command))
+  serverChannel.push('collect_results', {
+    command_id: evt.command_id,
+    encrypted_response: encryptPayload('response'),
+    server_id: 'js test'
+  })
 })
 
 window.clientChannel = channel;
 window.serverChannel = serverChannel;
-// clientChannel.push("dispatch_command", {application_name: "Test", command_id: "a", encrypted_command: "b"})
+window.dispatchTestCommand = () => {
+  clientChannel.push("dispatch_command", {
+    application_name: "Test",
+    command_id: "a",
+    encrypted_command: encryptPayload('test')
+  })
+}
