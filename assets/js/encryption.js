@@ -5,6 +5,9 @@ import { stringToAsciiByteArray, asciiByteArrayToString, randomBytes } from './e
 
 export function decryptPayload(encryptedPayload) {
   const split = encryptedPayload.split('--')
+
+  if (split.length !== 2) { throw new Error('Invalid encrypted payload provided') }
+
   const base64Iv = split[0];
   const base64Encrypted = split[1];
 
