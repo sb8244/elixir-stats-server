@@ -4,9 +4,10 @@ defmodule StatsServer.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
-    children = [
-      supervisor(StatsServerWeb.Endpoint, [])
-    ]
+    children =
+      [
+        supervisor(StatsServerWeb.Endpoint, [])
+      ] ++ children(env())
 
     opts = [strategy: :one_for_one, name: StatsServer.Supervisor]
     Supervisor.start_link(children, opts)
@@ -16,4 +17,14 @@ defmodule StatsServer.Application do
     StatsServerWeb.Endpoint.config_change(changed, removed)
     :ok
   end
+
+  def env(), do: Application.get_env(:stats_server, :env)
+
+  def children(:dev) do
+    [
+      {MockClient.Socket, []}
+    ]
+  end
+
+  def children(_), do: []
 end

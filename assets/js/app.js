@@ -52,9 +52,9 @@ serverChannel.on('dispatch_command', (evt) => {
 
 window.clientChannel = channel;
 window.serverChannel = serverChannel;
-window.dispatchTestCommand = () => {
+window.dispatchTestCommand = ({ application_name = "Test" }) => {
   clientChannel.push("dispatch_command", {
-    application_name: "Test",
+    application_name: application_name,
     command_id: "a",
     encrypted_command: encryptPayload('test')
   })

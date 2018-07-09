@@ -3,7 +3,8 @@ defmodule MockClient.Encryption do
     iv = :crypto.strong_rand_bytes(16)
     encrypted = :crypto.block_encrypt(:aes_cbc256, sha256_key(key), iv, pad_message(payload))
 
-    {Base.encode64(iv), Base.encode64(encrypted)}
+    [Base.encode64(iv), Base.encode64(encrypted)]
+    |> Enum.join("--")
   end
 
   def decrypt({base64_iv, base64_encrypted}, key: key) do

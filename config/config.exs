@@ -5,6 +5,8 @@
 # is restricted to this project.
 use Mix.Config
 
+config :stats_server, env: Mix.env()
+
 # Configures the endpoint
 config :stats_server, StatsServerWeb.Endpoint,
   url: [host: "localhost"],
