@@ -1,5 +1,5 @@
 defmodule MockClient.Encryption do
-  def encrypt(payload, key: key) do
+  def encrypt(payload, key: key) when is_bitstring(payload) do
     iv = :crypto.strong_rand_bytes(16)
     encrypted = :crypto.block_encrypt(:aes_cbc256, sha256_key(key), iv, pad_message(payload))
 
@@ -7,13 +7,16 @@ defmodule MockClient.Encryption do
     |> Enum.join("--")
   end
 
-  def decrypt(payload, key: key) do
-    [base64_iv, base64_encrypted] = String.split(payload, "--")
-    {:ok, iv} = Base.decode64(base64_iv)
-    {:ok, encrypted} = Base.decode64(base64_encrypted)
-
-    :crypto.block_decrypt(:aes_cbc256, sha256_key(key), iv, encrypted)
-    |> unpad_message()
+  def decrypt(payload, key: key) when is_bitstring(payload) do
+    with {:split, [base64_iv, base64_encrypted]} <- {:split, String.split(payload, "--")},
+         {:ok, iv} <- Base.decode64(base64_iv),
+         {:ok, encrypted} <- Base.decode64(base64_encrypted) do
+      :crypto.block_decrypt(:aes_cbc256, sha256_key(key), iv, encrypted)
+      |> unpad_message()
+    else
+      {:split, _} -> :error
+      :error -> :error
+    end
   end
 
   defp sha256_key(key) do
@@ -42,6 +45,3 @@ defmodule MockClient.Encryption do
     end
   end
 end
-
-# res = MockClient.Encryption.encrypt("test", key: "secret")
-# MockClient.Encryption.decrypt(res, key: "secret")
