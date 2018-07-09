@@ -20,6 +20,7 @@ defmodule MockClient.CommandHandler.AllSystemStats do
 
   defp gc_stats() do
     {count, words_reclaimed, 0} = :erlang.statistics(:garbage_collection)
+
     %{
       count: count,
       words_reclaimed: words_reclaimed
@@ -38,6 +39,7 @@ defmodule MockClient.CommandHandler.AllSystemStats do
 
   defp reductions() do
     {total, since_last_call} = :erlang.statistics(:exact_reductions)
+
     %{
       total: total,
       since_last_call: since_last_call

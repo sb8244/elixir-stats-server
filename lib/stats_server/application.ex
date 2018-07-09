@@ -22,8 +22,8 @@ defmodule StatsServer.Application do
 
   def children(:dev) do
     [
-      {MockClient.Socket, []},
-      {MockClient.Socket, [id: MockClient.Socket.Two]}
+      {MockClient.Socket, [server_id: "Server One"]},
+      {MockClient.Socket, [id: MockClient.Socket.Two, server_id: "Server Two"]}
     ]
   end
 

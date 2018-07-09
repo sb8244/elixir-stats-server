@@ -27,6 +27,7 @@ defmodule MockClient.Socket do
   def init(opts) do
     url = Keyword.fetch!(opts, :url)
     connect_interval_s = Keyword.get(opts, :connect_interval_s, 3)
+    server_id = Keyword.fetch!(opts, :server_id)
 
     url_params = [
       application_name: "MockServer",
@@ -36,20 +37,22 @@ defmodule MockClient.Socket do
     state = %{
       first_join: true,
       application_name: "MockServer",
-      connect_interval_s: connect_interval_s
+      connect_interval_s: connect_interval_s,
+      server_id: server_id
     }
 
     {:connect, url, url_params, state}
   end
 
-  def handle_message(topic, "dispatch_command", %{"command_id" => cid, "encrypted_command" => encrypted_command}, transport, state) do
+  def handle_message(topic, "dispatch_command", %{"command_id" => cid, "encrypted_command" => encrypted_command}, transport, state = %{server_id: server_id}) do
     {:ok, command} = MockClient.Encryption.decrypt(encrypted_command, key: "secret")
     {:ok, response} = MockClient.CommandHandler.call(command)
+
     {:ok, _} =
       GenSocketClient.push(transport, topic, "collect_results", %{
         command_id: cid,
         encrypted_response: MockClient.Encryption.encrypt(response, key: "secret"),
-        server_id: 'MockElixir'
+        server_id: server_id
       })
 
     {:ok, state}
