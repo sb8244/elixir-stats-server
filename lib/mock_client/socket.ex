@@ -40,7 +40,8 @@ defmodule MockClient.Socket do
 
     url_params = [
       application_name: "MockServer",
-      token: StatsServer.Config.server_socket_authentication_secret()
+      token: StatsServer.Config.server_socket_authentication_secret(),
+      server_id: server_id
     ]
 
     state = %{

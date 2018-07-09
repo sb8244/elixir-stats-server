@@ -7,13 +7,18 @@ defmodule StatsServerWeb.ServerSocket do
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket)
 
-  def connect(%{"application_name" => app_name, "token" => token}, socket) do
+  def connect(%{"application_name" => app_name, "server_id" => server_id, "token" => token}, socket) do
     if token == StatsServer.Config.server_socket_authentication_secret() do
-      {:ok, assign(socket, :application_name, app_name)}
+      socket =
+        socket
+        |> assign(:application_name, app_name)
+        |> assign(:server_id, server_id)
+
+      {:ok, socket}
     else
       :error
     end
   end
 
-  def id(%{assigns: %{application_name: app_name}}), do: "server_socket:#{app_name}"
+  def id(%{assigns: %{application_name: app_name, server_id: server_id}}), do: "server_socket:#{app_name}:#{server_id}"
 end
