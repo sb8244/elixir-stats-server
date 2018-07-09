@@ -42,11 +42,13 @@ defmodule MockClient.Socket do
     {:connect, url, url_params, state}
   end
 
-  def handle_message(topic, "dispatch_command", %{"command_id" => cid}, transport, state) do
+  def handle_message(topic, "dispatch_command", %{"command_id" => cid, "encrypted_command" => encrypted_command}, transport, state) do
+    {:ok, command} = MockClient.Encryption.decrypt(encrypted_command, key: "secret")
+    {:ok, response} = MockClient.CommandHandler.call(command)
     {:ok, _} =
       GenSocketClient.push(transport, topic, "collect_results", %{
         command_id: cid,
-        encrypted_response: MockClient.Encryption.encrypt("fake response", key: "secret"),
+        encrypted_response: MockClient.Encryption.encrypt(response, key: "secret"),
         server_id: 'MockElixir'
       })
 
@@ -95,6 +97,11 @@ defmodule MockClient.Socket do
     {:ok, state}
   end
 
+  def handle_info(:connect, _transport, state) do
+    Logger.info("connecting")
+    {:connect, state}
+  end
+
   def handle_info({:join, topic}, transport, state = %{connect_interval_s: connect_interval_s}) do
     Logger.debug("joining the topic #{topic}")
 
@@ -111,7 +118,7 @@ defmodule MockClient.Socket do
   end
 
   def handle_info(message, _transport, state) do
-    Logger.warn("Unhandled message #{inspect(message)}")
+    Logger.warn("Unhandled info #{inspect(message)}")
     {:ok, state}
   end
 

@@ -7,7 +7,8 @@ defmodule MockClient.Encryption do
     |> Enum.join("--")
   end
 
-  def decrypt({base64_iv, base64_encrypted}, key: key) do
+  def decrypt(payload, key: key) do
+    [base64_iv, base64_encrypted] = String.split(payload, "--")
     {:ok, iv} = Base.decode64(base64_iv)
     {:ok, encrypted} = Base.decode64(base64_encrypted)
 
