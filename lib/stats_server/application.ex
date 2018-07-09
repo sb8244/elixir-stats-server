@@ -6,7 +6,8 @@ defmodule StatsServer.Application do
 
     children =
       [
-        supervisor(StatsServerWeb.Endpoint, [])
+        supervisor(StatsServerWeb.Endpoint, []),
+        StatsServerWeb.ServerPresence
       ] ++ children(env())
 
     opts = [strategy: :one_for_one, name: StatsServer.Supervisor]
@@ -22,7 +23,7 @@ defmodule StatsServer.Application do
 
   def children(:dev) do
     [
-      {MockClient.Socket, []},
+      MockClient.Socket,
       {MockClient.Socket, [id: MockClient.Socket.Two, server_id: "Server Two"]}
     ]
   end

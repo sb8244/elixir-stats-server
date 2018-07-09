@@ -3,10 +3,14 @@ defmodule StatsServerWeb.ServerChannelTest do
 
   alias StatsServerWeb.ServerChannel
 
-  def start_socket() do
+  @valid_socket_assigns %{application_name: "test", server_id: "test"}
+
+  def start_socket(opts \\ %{}) do
+    assigns = Map.merge(@valid_socket_assigns, opts)
+
     {:ok, _, s = %Phoenix.Socket{}} =
-      socket("server_socket:test", %{application_name: "test"})
-      |> subscribe_and_join(ServerChannel, "server:test", %{})
+      socket("server_socket:test", assigns)
+      |> subscribe_and_join(ServerChannel, "server:#{assigns.application_name}", %{})
 
     s
   end
@@ -17,8 +21,30 @@ defmodule StatsServerWeb.ServerChannelTest do
     end
 
     test "an invalid socket app name can not be joined" do
-      assert socket("server_socket:test", %{application_name: "test"})
+      assert socket("server_socket:test", @valid_socket_assigns)
              |> subscribe_and_join(ServerChannel, "server:mismatch", %{}) == {:error, %{reason: "application name mismatch"}}
+    end
+
+    test "presence is tracked", context do
+      test = to_string(context.test)
+      start_socket(%{application_name: test})
+
+      list = StatsServerWeb.ServerPresence.list("server:#{test}")
+      assert %{
+        "servers" => %{
+          metas: [
+            %{
+              application_name: ^test,
+              online_at: online_at,
+              phx_ref: phx_ref,
+              server_id: "test"
+            }
+          ]
+        }
+      } = list
+
+      assert is_bitstring(online_at)
+      assert is_bitstring(phx_ref)
     end
   end
 
