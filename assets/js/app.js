@@ -1,14 +1,6 @@
 import { Socket } from 'phoenix'
-import { encryptPayload, decryptPayload } from './encryption'
+import { decryptPayload } from './encryption'
 import { allSystemStats } from './commands'
-
-[
-  "cHvxhUgY3E5io6J5VJD6Tg==--l+ejr1hNt6E7v7g5PTDzfg=="
-].forEach((data) => {
-  console.log(decryptPayload(data))
-})
-
-console.log(decryptPayload(encryptPayload('memory|530M')))
 
 const socket = new Socket('/client_socket', { params: { token: 'dev' } })
 
@@ -32,29 +24,8 @@ channel.on('collect_results', (evt) => {
   console.log('[client] collect_results', evt, 'decryptedResponse=', JSON.parse(decryptPayload(evt.encrypted_response)))
 })
 
-const serverSocket = new Socket('/server_socket', { params: { application_name: "Test", token: 'server_dev' } })
-
-serverSocket.connect()
-
-const serverChannel = serverSocket.channel('server:Test', {})
-
-serverChannel.join()
-  .receive('ok', () => console.log('server connected'))
-  .receive('timeout', () => console.log('Networking issue. Still waiting...'))
-
-serverChannel.on('dispatch_command', (evt) => {
-  console.log('[server] dispatch_command', evt, 'decryptedPayload=', decryptPayload(evt.encrypted_command))
-  serverChannel.push('collect_results', {
-    command_id: evt.command_id,
-    encrypted_response: encryptPayload('response'),
-    server_id: 'js test'
-  })
-})
-
-window.clientChannel = channel;
-window.serverChannel = serverChannel;
 window.dispatchTestCommand = ({ application_name = "Test" }) => {
-  clientChannel.push("dispatch_command", Object.assign({
+  channel.push("dispatch_command", Object.assign({
     application_name
   }, allSystemStats()))
 }
