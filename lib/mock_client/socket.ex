@@ -27,12 +27,15 @@ defmodule MockClient.Socket do
   def init(opts) do
     url = Keyword.fetch!(opts, :url)
     connect_interval_s = Keyword.get(opts, :connect_interval_s, 3)
+
     server_id =
       case Keyword.get(opts, :server_id) do
         nil ->
           {:ok, host} = :inet.gethostname()
           to_string(host)
-        id -> id
+
+        id ->
+          id
       end
 
     url_params = [
