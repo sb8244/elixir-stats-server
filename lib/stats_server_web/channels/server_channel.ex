@@ -3,7 +3,7 @@ defmodule StatsServerWeb.ServerChannel do
 
   alias StatsServerWeb.ServerPresence
 
-  intercept(["dispatch_command"])
+  intercept(["dispatch_command", "presence_diff"])
 
   def join("server:" <> app_name, _message, socket = %{assigns: %{application_name: socket_app_name}}) do
     if app_name == socket_app_name do
@@ -12,6 +12,10 @@ defmodule StatsServerWeb.ServerChannel do
     else
       {:error, %{reason: "application name mismatch"}}
     end
+  end
+
+  def handle_out("presence_diff", msg, socket) do
+    {:noreply, socket}
   end
 
   def handle_out("dispatch_command", payload = %{command_id: _, encrypted_command: _}, socket) do
