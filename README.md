@@ -2,13 +2,13 @@
 
 A deployable service that acts as a broker between a JS frontend and many Elixir service backends (many nodes). The frontend can send a request throughout the system like "fetch system stats" and get all of the stats for current nodes. Or maybe "fetch 100 highest processes per node". This could be done for an application (cluster), node (single), or all (clusters)
 
-*Elixir Node Side*
+## Elixir Node Side
 Connects to the central broker via a persistent websocket. always listening for known commands and can respond in certain formats like "stats list" or "plaintext". Custom commands can be added per application.
 
-*Security*
+## Security
 AES encryption on JS and Elixir nodes. The websocket broker has no idea what messages / data is being sent over the wire.
 
-*Reason*
+## Reason
 No APM right now allows things like "give me a process list". Collecting this across many Elixir Nodes is very cumbersome and can take minutes or longer. This might also be intensive work that you only want to run at your command ,rather than automated.
 
 ## Flow
