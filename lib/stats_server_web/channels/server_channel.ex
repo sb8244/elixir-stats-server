@@ -14,7 +14,7 @@ defmodule StatsServerWeb.ServerChannel do
     end
   end
 
-  def handle_out("presence_diff", msg, socket) do
+  def handle_out("presence_diff", _msg, socket) do
     {:noreply, socket}
   end
 
@@ -43,8 +43,7 @@ defmodule StatsServerWeb.ServerChannel do
 
   def handle_info(:after_join, socket = %{assigns: %{application_name: app_name, server_id: server_id}}) do
     {:ok, _} =
-      ServerPresence.track(socket.channel_pid, "servers", "servers", %{
-        online_at: inspect(System.system_time(:seconds)),
+      ServerPresence.track(socket, %{
         application_name: app_name,
         server_id: server_id
       })

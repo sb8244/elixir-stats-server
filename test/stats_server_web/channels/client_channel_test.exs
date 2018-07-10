@@ -1,5 +1,5 @@
 defmodule StatsServerWeb.ClientChannelTest do
-  use StatsServerWeb.ChannelCase, async: true
+  use StatsServerWeb.ChannelCase, async: false # presence not async
 
   alias StatsServerWeb.{ClientChannel, ServerPresence}
 
@@ -40,8 +40,9 @@ defmodule StatsServerWeb.ClientChannelTest do
     end
 
     test "connected servers are listed" do
-      ServerPresence.track(self(), "servers", "servers", %{test: true})
-      ref = push(start_socket(), "connected_servers", %{})
+      socket = start_socket()
+      ServerPresence.track(socket, %{test: true})
+      ref = push(socket, "connected_servers", %{})
       assert_reply(ref, :ok, %{connected_servers: [%{phx_ref: _, test: true}]})
     end
   end
