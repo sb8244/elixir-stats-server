@@ -31,6 +31,15 @@ channel.on('collect_results', (evt) => {
   console.log('[client] collect_results', evt, 'payload=', payload)
 })
 
+window.connectedServers = () => {
+  channel.push("connected_servers", {})
+    .receive('ok', (data) => console.log('connected_servers', data.connected_servers))
+}
+
+window.applicationNames = () => {
+  channel.push("application_names", {})
+    .receive('ok', (data) => console.log('application_names', data.application_names))
+}
 window.dispatchTestCommand = ({ application_name = "Test" }) => {
   channel.push("dispatch_command", Object.assign({
     application_name
