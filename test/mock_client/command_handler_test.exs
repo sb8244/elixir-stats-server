@@ -34,9 +34,10 @@ defmodule MockClient.CommandHandlerTest do
 
   describe "default handlers" do
     test "all_system_stats returns a JSON payload" do
-      {:ok, payload_json} = CommandHandler.call("all_system_stats")
-      payload = Poison.decode!(payload_json)
-      assert Map.keys(payload) == ["gc", "memory", "process", "reductions", "run_queue"]
+      {:ok, "stats|" <> stats_json} = CommandHandler.call("all_system_stats")
+      payload = Poison.decode!(stats_json)
+      assert is_list(payload)
+      assert %{"label" => "gc count", "value" => _} = Enum.at(payload, 0)
     end
   end
 end
