@@ -1,6 +1,11 @@
 defmodule MockClient.CommandHandler.AllSystemStats do
   def call("all_system_stats") do
-    payload = get_system_stats()
+    payload =
+      %{
+        collected_at_ms: :erlang.system_time(:milli_seconds),
+        stats: get_system_stats()
+      }
+
     "stats|" <> Poison.encode!(payload)
   end
 

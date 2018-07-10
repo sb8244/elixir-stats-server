@@ -21,7 +21,14 @@ channel.join()
   .receive('timeout', () => console.log('Networking issue. Still waiting...'))
 
 channel.on('collect_results', (evt) => {
-  console.log('[client] collect_results', evt, 'decryptedResponse=', JSON.parse(decryptPayload(evt.encrypted_response)))
+  const decrypted = decryptPayload(evt.encrypted_response);
+  let payload;
+
+  if (decrypted.startsWith('stats|')) {
+    payload = JSON.parse(decrypted.replace('stats|', ''))
+  }
+
+  console.log('[client] collect_results', evt, 'payload=', payload)
 })
 
 window.dispatchTestCommand = ({ application_name = "Test" }) => {
