@@ -2,6 +2,7 @@ defmodule StatsServerWeb.ClientChannel do
   use Phoenix.Channel
 
   alias StatsServer.Config
+  alias StatsServerWeb.ServerPresence
 
   intercept(["collect_results"])
 
@@ -17,6 +18,10 @@ defmodule StatsServerWeb.ClientChannel do
 
   def handle_in("application_names", _payload, socket) do
     {:reply, {:ok, %{application_names: Config.application_names()}}, socket}
+  end
+
+  def handle_in("connected_servers", _payload, socket) do
+    {:reply, {:ok, %{connected_servers: ServerPresence.connected_server_list()}}, socket}
   end
 
   def handle_in("dispatch_command", %{"application_name" => app_name, "command_id" => id, "encrypted_command" => command}, socket) do

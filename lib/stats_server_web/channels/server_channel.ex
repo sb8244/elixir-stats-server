@@ -43,7 +43,7 @@ defmodule StatsServerWeb.ServerChannel do
 
   def handle_info(:after_join, socket = %{assigns: %{application_name: app_name, server_id: server_id}}) do
     {:ok, _} =
-      ServerPresence.track(socket, "servers", %{
+      ServerPresence.track(socket.channel_pid, "servers", "servers", %{
         online_at: inspect(System.system_time(:seconds)),
         application_name: app_name,
         server_id: server_id

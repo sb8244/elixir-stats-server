@@ -1,7 +1,7 @@
 defmodule StatsServerWeb.ClientChannelTest do
   use StatsServerWeb.ChannelCase, async: true
 
-  alias StatsServerWeb.ClientChannel
+  alias StatsServerWeb.{ClientChannel, ServerPresence}
 
   def start_socket() do
     {:ok, _, s = %Phoenix.Socket{}} =
@@ -30,6 +30,19 @@ defmodule StatsServerWeb.ClientChannelTest do
     test "the application names are returned" do
       ref = push(start_socket(), "application_names", %{})
       assert_reply(ref, :ok, %{application_names: ["Test", "Other Test"]})
+    end
+  end
+
+  describe "handle_in connected_servers" do
+    test "an empty list can be returned" do
+      ref = push(start_socket(), "connected_servers", %{})
+      assert_reply(ref, :ok, %{connected_servers: []})
+    end
+
+    test "connected servers are listed" do
+      ServerPresence.track(self(), "servers", "servers", %{test: true})
+      ref = push(start_socket(), "connected_servers", %{})
+      assert_reply(ref, :ok, %{connected_servers: [%{phx_ref: _, test: true}]})
     end
   end
 

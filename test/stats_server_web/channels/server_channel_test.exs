@@ -29,19 +29,16 @@ defmodule StatsServerWeb.ServerChannelTest do
       test = to_string(context.test)
       start_socket(%{application_name: test})
 
-      list = StatsServerWeb.ServerPresence.list("server:#{test}")
-      assert %{
-        "servers" => %{
-          metas: [
-            %{
-              application_name: ^test,
-              online_at: online_at,
-              phx_ref: phx_ref,
-              server_id: "test"
-            }
-          ]
+      list = StatsServerWeb.ServerPresence.connected_server_list()
+
+      assert [
+        %{
+          application_name: ^test,
+          online_at: online_at,
+          phx_ref: phx_ref,
+          server_id: "test"
         }
-      } = list
+      ] = list
 
       assert is_bitstring(online_at)
       assert is_bitstring(phx_ref)
