@@ -1,4 +1,4 @@
-import { Socket } from 'phoenix'
+import { Socket, Presence } from 'phoenix'
 import { decryptPayload } from './encryption'
 import { allSystemStats } from './commands'
 
@@ -29,6 +29,18 @@ channel.on('collect_results', (evt) => {
   }
 
   console.log('[client] collect_results', evt, 'payload=', payload)
+})
+
+let presences = {}
+
+channel.on("presence_state", state => {
+  presences = Presence.syncState(presences, state)
+  console.log("presence", presences)
+})
+
+channel.on("presence_diff", diff => {
+  presences = Presence.syncDiff(presences, diff)
+  console.log("presence", presences)
 })
 
 window.connectedServers = () => {

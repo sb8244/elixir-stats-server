@@ -7,6 +7,7 @@ defmodule StatsServerWeb.ClientChannel do
   intercept(["collect_results"])
 
   def join("client", _message, socket) do
+    send(self(), :after_join)
     {:ok, socket}
   end
 
@@ -20,10 +21,6 @@ defmodule StatsServerWeb.ClientChannel do
     {:reply, {:ok, %{application_names: Config.application_names()}}, socket}
   end
 
-  def handle_in("connected_servers", _payload, socket) do
-    {:reply, {:ok, %{connected_servers: ServerPresence.connected_server_list()}}, socket}
-  end
-
   def handle_in("dispatch_command", %{"application_name" => app_name, "command_id" => id, "encrypted_command" => command}, socket) do
     server_params = %{
       command_id: id,
@@ -33,5 +30,10 @@ defmodule StatsServerWeb.ClientChannel do
     StatsServerWeb.Endpoint.broadcast("server:#{app_name}", "dispatch_command", server_params)
 
     {:reply, {:ok, %{}}, socket}
+  end
+
+  def handle_info(:after_join, socket) do
+    push socket, "presence_state", ServerPresence.list("client")
+    {:noreply, socket}
   end
 end

@@ -1,5 +1,5 @@
 defmodule StatsServerWeb.ServerChannelTest do
-  use StatsServerWeb.ChannelCase, async: false # presence not async
+  use StatsServerWeb.ChannelCase, async: true
 
   alias StatsServerWeb.ServerChannel
 
