@@ -16,7 +16,7 @@ config :stats_server, StatsServerWeb.Endpoint,
 config :stats_server, StatsServer.Config,
   client_socket_authentication_secret: "dev",
   server_socket_authentication_secret: "server_dev",
-  application_names: ["Dev", "Other Dev"]
+  application_names: ["Unused", "MockServer"]
 
 # ## SSL Support
 #
