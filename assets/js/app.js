@@ -1,6 +1,10 @@
-import { Socket, Presence } from 'phoenix'
+import { Socket } from 'phoenix'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 import { decryptPayload } from './encryption'
 import { allSystemStats } from './commands'
+import App from './containers/app'
 
 const socket = new Socket('/client_socket', { params: { token: 'dev' } })
 
@@ -31,18 +35,6 @@ channel.on('collect_results', (evt) => {
   console.log('[client] collect_results', evt, 'payload=', payload)
 })
 
-let presences = {}
-
-channel.on("presence_state", state => {
-  presences = Presence.syncState(presences, state)
-  console.log("presence", presences)
-})
-
-channel.on("presence_diff", diff => {
-  presences = Presence.syncDiff(presences, diff)
-  console.log("presence", presences)
-})
-
 window.connectedServers = () => {
   channel.push("connected_servers", {})
     .receive('ok', (data) => console.log('connected_servers', data.connected_servers))
@@ -57,3 +49,8 @@ window.dispatchTestCommand = ({ application_name = "Test" }) => {
     application_name
   }, allSystemStats()))
 }
+
+ReactDOM.render(
+  <App channel={channel} />,
+  document.getElementById('react-app')
+);
