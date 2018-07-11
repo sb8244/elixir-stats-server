@@ -4,6 +4,9 @@ import ServerListState from '../components/ServerListState'
 import CommandList from '../components/CommandList'
 import ApplicationList from '../components/ApplicationList'
 
+import Collector from '../components/Collector'
+import CollectorState from '../components/CollectorState'
+
 export default class Test extends Component {
   constructor(props) {
     super(props)
@@ -30,6 +33,10 @@ export default class Test extends Component {
 
         <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
         <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
+
+        <CollectorState channel={channel}>
+          <Collector />
+        </CollectorState>
       </div>
     )
   }

@@ -2,7 +2,6 @@ import { Socket } from 'phoenix'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { decryptPayload } from './encryption'
 import { allSystemStats } from './commands'
 import App from './containers/app'
 
@@ -23,17 +22,6 @@ const channel = socket.channel('client', {})
 channel.join()
   .receive('ok', () => console.log('connected'))
   .receive('timeout', () => console.log('Networking issue. Still waiting...'))
-
-channel.on('collect_results', (evt) => {
-  const decrypted = decryptPayload(evt.encrypted_response);
-  let payload;
-
-  if (decrypted.startsWith('stats|')) {
-    payload = JSON.parse(decrypted.replace('stats|', ''))
-  }
-
-  console.log('[client] collect_results', evt, 'payload=', payload)
-})
 
 window.connectedServers = () => {
   channel.push("connected_servers", {})
