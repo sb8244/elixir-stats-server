@@ -1,3 +1,8 @@
+.server-list-wrapper {
+  max-height: 300px;
+  overflow: auto;
+}
+
 .server-stats-list {
   display: flex;
 }
