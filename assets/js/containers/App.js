@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+
 import ServerList from '../components/ServerList'
 import ServerListState from '../components/ServerListState'
 import CommandList from '../components/CommandList'
 import ApplicationList from '../components/ApplicationList'
-
 import Collector from '../components/Collector'
 import CollectorState from '../components/CollectorState'
+import CommandHistoryState from '../components/CommandHistoryState'
 
 export default class Test extends Component {
   constructor(props) {
@@ -27,16 +28,18 @@ export default class Test extends Component {
 
     return (
       <div>
-        <ServerListState channel={channel}>
-          <ServerList />
-        </ServerListState>
+        <CommandHistoryState>
+          <ServerListState channel={channel}>
+            <ServerList />
+          </ServerListState>
 
-        <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
-        <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
+          <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
+          <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
 
-        <CollectorState channel={channel}>
-          <Collector />
-        </CollectorState>
+          <CollectorState channel={channel}>
+            <Collector />
+          </CollectorState>
+        </CommandHistoryState>
       </div>
     )
   }

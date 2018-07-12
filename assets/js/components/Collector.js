@@ -2,13 +2,14 @@ import React from 'react'
 import groupBy from 'lodash/groupBy'
 
 import { CollectorStateContext } from './CollectorState'
+import { CommandHistoryStateContext } from './CommandHistoryState'
 
 function groupStatsByCommandId(eventList) {
   const statsEvents = eventList.filter(({ type }) => type === 'stats')
   return groupBy(statsEvents, "commandId")
 }
 
-function appGrouping(appGroup) {
+function appGrouping(appGroup, getCommandTitle) {
   const commandGrouped = groupStatsByCommandId(appGroup)
 
   return (
@@ -16,7 +17,7 @@ function appGrouping(appGroup) {
       {
         Object.keys(commandGrouped).map((commandId) => (
           <div key={commandId}>
-            <h3>{commandId}</h3>
+            <h3>{commandId} - {getCommandTitle(commandId)}</h3>
             <div className="server-stats-list">
               {serverStatsGroup(commandGrouped[commandId])}
             </div>
@@ -44,17 +45,23 @@ function serverStatsGroup(statsArr) {
 }
 
 export default () => (
-  <CollectorStateContext.Consumer>
+  <CommandHistoryStateContext.Consumer>
   {
-    (collected) => (
-      Object.keys(collected).map((appName) => (
-        <div key={appName}>
-          <h2>{appName}</h2>
+    ({ getTitle }) => (
+      <CollectorStateContext.Consumer>
+      {
+        (collected) => (
+          Object.keys(collected).map((appName) => (
+            <div key={appName}>
+              <h2>{appName}</h2>
 
-          {appGrouping(collected[appName])}
-        </div>
-      ))
+              {appGrouping(collected[appName], getTitle)}
+            </div>
+          ))
+        )
+      }
+      </CollectorStateContext.Consumer>
     )
   }
-  </CollectorStateContext.Consumer>
+  </CommandHistoryStateContext.Consumer>
 )
