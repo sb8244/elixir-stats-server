@@ -1,0 +1,7 @@
+.server-stats-list {
+  display: flex;
+}
+
+.server-stats-list__entry {
+  padding: 15px 40px;
+}
