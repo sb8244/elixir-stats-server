@@ -1,5 +1,5 @@
 defmodule MockClient.CommandHandler do
-  @command_handlers [MockClient.CommandHandler.AllSystemStats]
+  @command_handlers [MockClient.CommandHandler.AllSystemStats, MockClient.CommandHandler.ProcessCount]
 
   def call(command, opts \\ []) do
     command_handlers = Keyword.get(opts, :handlers, @command_handlers)

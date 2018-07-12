@@ -7,6 +7,13 @@ export function allSystemStats() {
   }
 }
 
+export function processCountStats() {
+  return {
+    command_id: randomCommandId(),
+    encrypted_command: encryptPayload('process_count_stats')
+  }
+}
+
 function randomCommandId() {
   return Math.random().toString(36).substring(2)
 }
