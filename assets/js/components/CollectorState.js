@@ -1,4 +1,5 @@
 import React, { Component, createContext } from 'react'
+import sortBy from 'lodash/sortBy'
 
 import { decryptPayload } from '../encryption'
 
@@ -16,13 +17,20 @@ export default class CollectorState extends Component {
 
     channel.on('collect_results', (evt) => {
       const decrypted = decryptPayload(evt.encrypted_response);
-      let payload;
 
       if (decrypted.startsWith('stats|')) {
-        payload = JSON.parse(decrypted.replace('stats|', ''))
+        const decryptedPayload = JSON.parse(decrypted.replace('stats|', ''))
+        const payload = {
+          serverId: evt.server_id,
+          commandId: evt.command_id,
+          stats: decryptedPayload.stats,
+          collectedAt: new Date(decryptedPayload.collected_at_ms),
+          type: 'stats'
+        }
+
         const { collected } = this.state
         const oldData = collected[evt.application_name] || []
-        const newData = oldData.concat([payload])
+        const newData = sortBy([payload].concat(oldData), 'serverId')
 
         this.setState({
           collected: {
