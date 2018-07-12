@@ -24,8 +24,10 @@ defmodule StatsServer.Application do
   def children(:dev) do
     [
       MockClient.Socket,
-      {MockClient.Socket, [id: MockClient.Socket.Two, server_id: "Server Two"]}
-    ]
+      {MockClient.Socket, [id: "MockClient.Socket Other", server_id: "Other Server"]}
+    ] ++ Enum.map((1..30), fn i ->
+      {MockClient.Socket, [id: "MockClient.Socket #{i}", server_id: "Server #{i}"]}
+    end)
   end
 
   def children(_), do: []
