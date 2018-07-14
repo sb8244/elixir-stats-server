@@ -39,11 +39,7 @@ defmodule StatsServer.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:mockery, "~> 2.2.0", runtime: false},
-
-      # elixir websocket client
-      {:phoenix_gen_socket_client, "~> 2.1.1"},
-      {:websocket_client, "~> 1.2"},
-      {:poison, "~> 2.0"}
+      {:stats_agent, path: '../stats_agent'}
     ]
   end
 end

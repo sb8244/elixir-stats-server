@@ -22,12 +22,12 @@ defmodule StatsServer.Application do
   def env(), do: Application.get_env(:stats_server, :env)
 
   def children(:dev) do
+    secret = StatsServer.Config.server_socket_authentication_secret()
+
     [
-      MockClient.Socket,
-      {MockClient.Socket, [id: "MockClient.Socket Other", server_id: "Other Server"]}
-    ] ++ Enum.map((1..30), fn i ->
-      {MockClient.Socket, [id: "MockClient.Socket #{i}", server_id: "Server #{i}"]}
-    end)
+      {StatsAgent.Socket, [authentication_secret: secret]},
+      {StatsAgent.Socket, [id: "StatsAgent.Socket Other", server_id: "Other Server", authentication_secret: secret]}
+    ]
   end
 
   def children(_), do: []
