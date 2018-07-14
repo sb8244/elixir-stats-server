@@ -33,7 +33,7 @@ defmodule StatsServerWeb.ClientChannel do
   end
 
   def handle_info(:after_join, socket) do
-    push socket, "presence_state", ServerPresence.list("client")
+    push(socket, "presence_state", ServerPresence.list("client"))
     {:noreply, socket}
   end
 end

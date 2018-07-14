@@ -10,8 +10,16 @@ defmodule StatsServerWeb.ServerPresence do
   end
 
   def track(socket, payload) do
-    track(socket.channel_pid, "client", "servers", Map.merge(%{
-      online_at: inspect(System.system_time(:seconds))
-    }, payload))
+    track(
+      socket.channel_pid,
+      "client",
+      "servers",
+      Map.merge(
+        %{
+          online_at: inspect(System.system_time(:seconds))
+        },
+        payload
+      )
+    )
   end
 end
