@@ -102,6 +102,8 @@ class CombinedLineChart extends Component {
         onTimeRangeChanged={timerange => this.setState({ timerange })}
         timeRange={this.state.timerange || timeRange}
         onBackgroundClick={() => this.setState({ timerange: null })}
+        maxTime={timeRange.end()}
+        minTime={timeRange.begin()}
       >
         <ChartRow height="200">
           <YAxis id="y" min={aggregates.min - (aggregates.min * .05)} max={aggregates.max + (aggregates.max * .05)} />
