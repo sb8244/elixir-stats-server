@@ -87,8 +87,8 @@ class CombinedLineChart extends Component {
     const { series } = this.props
 
     const charts = [
-      <LineChart axis="y" series={series} columns={['value']} style={style} />,
-      <ScatterChart axis="y" series={series} columns={['value']} style={style} />,
+      <LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,
+      <ScatterChart key="scatter" axis="y" series={series} columns={['value']} style={style} />,
     ]
 
     if (this.state.tracker) {
@@ -102,14 +102,15 @@ class CombinedLineChart extends Component {
     const { tracker, trackerEvent, trackerValue } = this.state
     return (
       <EventMarker
-         type="flag"
-         axis="y"
-         event={this.state.trackerEvent}
-         column="value"
-         info={[{ label: "Value", value: `${trackerValue}` }]}
-         infoWidth={120}
-         markerRadius={2}
-         markerStyle={{ fill: "black" }}
+        key="marker"
+        type="flag"
+        axis="y"
+        event={this.state.trackerEvent}
+        column="value"
+        info={[{ label: "Value", value: `${trackerValue}` }]}
+        infoWidth={120}
+        markerRadius={2}
+        markerStyle={{ fill: "black" }}
       />
     )
   }
