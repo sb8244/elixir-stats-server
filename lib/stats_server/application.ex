@@ -26,7 +26,7 @@ defmodule StatsServer.Application do
     url = "ws://localhost:4000/server_socket/websocket"
 
     [
-      {StatsAgent.Socket, [application_name: "MockServer", authentication_secret: secret, encryption_key: "secret", url: url]},
+      # {StatsAgent.Socket, [application_name: "MockServer", authentication_secret: secret, encryption_key: "secret", url: url]},
       {StatsAgent.Socket,
        [
          id: "StatsAgent.Socket Other",

@@ -12,7 +12,7 @@ export default class CollectorState extends Component {
     const { channel } = props;
 
     this.state = {
-      collected: {}
+      chartData: {}
     }
 
     channel.on('collect_results', (evt) => {
@@ -20,26 +20,38 @@ export default class CollectorState extends Component {
 
       if (decrypted.startsWith('stats|')) {
         const decryptedPayload = JSON.parse(decrypted.replace('stats|', ''))
-        const payload = {
-          serverId: evt.server_id,
-          commandId: evt.command_id,
-          stats: decryptedPayload.stats,
-          collectedAt: new Date(decryptedPayload.collected_at_ms),
-          type: 'stats'
-        }
+        let newChartData = this.state.chartData
 
-        const { collected } = this.state
-        const oldData = collected[evt.application_name] || []
-        const newData = sortBy([payload].concat(oldData), 'serverId')
+        decryptedPayload.stats.forEach(({ label, value }) => {
+          const chartDataEntry = newChartData[label] || this.generateEmptyChartData(label)
+          const dataPoint = [
+            decryptedPayload.collected_at_ms,
+            value
+          ]
 
-        this.setState({
-          collected: {
-            ...collected,
-            [evt.application_name]: newData
+          const newChartDataEntry = {
+            ...chartDataEntry,
+            points: chartDataEntry.points.concat([dataPoint])
+          }
+
+          newChartData = {
+            ...newChartData,
+            [chartDataEntry.name]: newChartDataEntry
           }
         })
+
+        console.log('[new chart data]', newChartData)
+        this.setState({ chartData: newChartData })
       }
     })
+  }
+
+  generateEmptyChartData(name) {
+    return {
+      name,
+      columns: ['time', 'value'],
+      points: []
+    }
   }
 
   componentWillUnmount() {
@@ -47,10 +59,8 @@ export default class CollectorState extends Component {
   }
 
   render() {
-    const { collected } = this.state
-
     return (
-      <CollectorStateContext.Provider value={collected}>
+      <CollectorStateContext.Provider value={this.state}>
         {this.props.children}
       </CollectorStateContext.Provider>
     )
