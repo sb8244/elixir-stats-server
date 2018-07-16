@@ -40,7 +40,7 @@ class CombinedLineChart extends Component {
       const series = seriesContainer[serverId]
 
       return [
-        <LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,
+        /*<LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,*/
         <ScatterChart key="scatter" axis="y" series={series} columns={['value']} style={style} />,
       ]
     })
@@ -92,8 +92,16 @@ class CombinedLineChart extends Component {
         format="%H:%M:%S"
         title={title}
         timeAxisTickCount={5}
+
+        /* Info box for currently hover point */
         onTrackerChanged={this.handleTrackerChanged}
         trackerPosition={this.state.tracker}
+
+        /* Time range selection */
+        enablePanZoom={true}
+        onTimeRangeChanged={timerange => this.setState({ timerange })}
+        timeRange={this.state.timerange || timeRange}
+        onBackgroundClick={() => this.setState({ timerange: null })}
       >
         <ChartRow height="200">
           <YAxis id="y" min={aggregates.min - (aggregates.min * .05)} max={aggregates.max + (aggregates.max * .05)} />
