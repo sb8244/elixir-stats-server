@@ -37,6 +37,7 @@ class CombinedLineChart extends Component {
     const { seriesContainer } = this.props
 
     const charts = Object.keys(seriesContainer).map((serverId) => {
+      // TODO: Only include the chart if the serverId is in the selected list (or none selected)
       const series = seriesContainer[serverId]
 
       return [
@@ -83,6 +84,7 @@ class CombinedLineChart extends Component {
   render() {
     const { title } = this.props
     const aggregates = this.getSeriesAggregates()
+    // TODO: Set a 2 minute maximum on how far back this can go
     const timeRange = new TimeRange([aggregates.begin - 30000, aggregates.end + 30000])
 
     return (
