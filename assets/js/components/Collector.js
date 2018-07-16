@@ -16,7 +16,8 @@ class CombinedLineChart extends Component {
 
   handleTrackerChanged = (tracker, scale) => {
     if (tracker) {
-      const e = this.props.series.atTime(tracker);
+      const series = Object.values(this.props.seriesContainer)[0]
+      const e = series.atTime(tracker);
 
       this.setState({
         tracker,
@@ -33,12 +34,16 @@ class CombinedLineChart extends Component {
   }
 
   renderCharts() {
-    const { series } = this.props
+    const { seriesContainer } = this.props
 
-    const charts = [
-      <LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,
-      <ScatterChart key="scatter" axis="y" series={series} columns={['value']} style={style} />,
-    ]
+    const charts = Object.keys(seriesContainer).map((serverId) => {
+      const series = seriesContainer[serverId]
+
+      return [
+        <LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,
+        <ScatterChart key="scatter" axis="y" series={series} columns={['value']} style={style} />,
+      ]
+    })
 
     if (this.state.tracker) {
       charts.push(this.renderMarker())
@@ -64,9 +69,21 @@ class CombinedLineChart extends Component {
     )
   }
 
+  getSeriesAggregates() {
+    return Object.values(this.props.seriesContainer).reduce((acc, series) => {
+      return {
+        begin: Math.min(series.begin().getTime(), acc.begin || Number.MAX_SAFE_INTEGER),
+        end: Math.max(series.end().getTime(), acc.end || Number.MIN_SAFE_INTEGER),
+        min: Math.min(series.min(), acc.min || Number.MAX_SAFE_INTEGER),
+        max: Math.max(series.max(), acc.max || Number.MIN_SAFE_INTEGER)
+      }
+    }, {})
+  }
+
   render() {
-    const { series, title } = this.props
-    const timeRange = new TimeRange([series.begin().getTime() - 30000, series.end().getTime() + 30000])
+    const { title } = this.props
+    const aggregates = this.getSeriesAggregates()
+    const timeRange = new TimeRange([aggregates.begin - 30000, aggregates.end + 30000])
 
     return (
       <ChartContainer
@@ -79,7 +96,7 @@ class CombinedLineChart extends Component {
         trackerPosition={this.state.tracker}
       >
         <ChartRow height="200">
-          <YAxis id="y" min={series.min() - (series.min() * .05)} max={series.max() + (series.max() * .05)} />
+          <YAxis id="y" min={aggregates.min - (aggregates.min * .05)} max={aggregates.max + (aggregates.max * .05)} />
           <Charts>
             {
               this.renderCharts()
@@ -93,10 +110,10 @@ class CombinedLineChart extends Component {
 
 function getTimeSeries(chartData) {
   return Object.keys(chartData).map((key) => {
-    const series = chartData[key]
+    const seriesContainer = chartData[key]
     return {
       id: key,
-      series
+      seriesContainer
     }
   })
 }
@@ -110,8 +127,8 @@ export default () => (
         ({ chartData }) => {
           const timeSeries = getTimeSeries(chartData)
 
-          return timeSeries.map(({ id, series }) => (
-            <CombinedLineChart key={id} series={series} title={id} />
+          return timeSeries.map(({ id, seriesContainer }) => (
+            <CombinedLineChart key={id} seriesContainer={seriesContainer} title={id} />
           ))
         }
       }

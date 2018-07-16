@@ -24,12 +24,16 @@ export default class CollectorState extends Component {
         let newChartData = this.state.chartData
 
         decryptedPayload.stats.forEach(({ label, value }) => {
-          const series = newChartData[label] || this.generateEmptyChartData(label)
-          const newChartDataEntry = this.appendChartEntry(series, new TimeEvent(decryptedPayload.collected_at_ms, value))
+          const seriesContainer = newChartData[label] || {}
+          const series = seriesContainer[evt.server_id] || this.generateEmptyChartData(label)
+          const newSeries = this.appendChartEntry(series, new TimeEvent(decryptedPayload.collected_at_ms, value))
 
           newChartData = {
             ...newChartData,
-            [series.name()]: newChartDataEntry
+            [label]: {
+              ...seriesContainer,
+              [evt.server_id]: newSeries
+            }
           }
         })
 
