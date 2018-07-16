@@ -1,20 +1,9 @@
 import React, { Component } from 'react'
-import groupBy from 'lodash/groupBy'
-import { TimeRange, TimeSeries } from "pondjs";
+import { TimeRange } from "pondjs";
 import { Charts, ChartContainer, ChartRow, EventMarker, YAxis, LineChart, ScatterChart, styler } from "react-timeseries-charts";
 
 import { CollectorStateContext } from './CollectorState'
 import { CommandHistoryStateContext } from './CommandHistoryState'
-
-function getTimeSeries(chartData) {
-  return Object.keys(chartData).map((key) => {
-    const entry = chartData[key]
-    return {
-      id: key,
-      series: new TimeSeries(entry)
-    }
-  })
-}
 
 const style = styler([{ key: "value", color: "orange", width: 1 }]);
 
@@ -100,6 +89,16 @@ class CombinedLineChart extends Component {
       </ChartContainer>
     )
   }
+}
+
+function getTimeSeries(chartData) {
+  return Object.keys(chartData).map((key) => {
+    const series = chartData[key]
+    return {
+      id: key,
+      series
+    }
+  })
 }
 
 export default () => (

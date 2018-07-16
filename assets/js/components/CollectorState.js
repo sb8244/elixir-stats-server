@@ -1,5 +1,6 @@
 import React, { Component, createContext } from 'react'
 import sortBy from 'lodash/sortBy'
+import { TimeEvent, TimeSeries } from "pondjs";
 
 import { decryptPayload } from '../encryption'
 
@@ -23,20 +24,12 @@ export default class CollectorState extends Component {
         let newChartData = this.state.chartData
 
         decryptedPayload.stats.forEach(({ label, value }) => {
-          const chartDataEntry = newChartData[label] || this.generateEmptyChartData(label)
-          const dataPoint = [
-            decryptedPayload.collected_at_ms,
-            value
-          ]
-
-          const newChartDataEntry = {
-            ...chartDataEntry,
-            points: chartDataEntry.points.concat([dataPoint])
-          }
+          const series = newChartData[label] || this.generateEmptyChartData(label)
+          const newChartDataEntry = this.appendChartEntry(series, new TimeEvent(decryptedPayload.collected_at_ms, value))
 
           newChartData = {
             ...newChartData,
-            [chartDataEntry.name]: newChartDataEntry
+            [series.name()]: newChartDataEntry
           }
         })
 
@@ -46,12 +39,20 @@ export default class CollectorState extends Component {
     })
   }
 
+  appendChartEntry(series, event) {
+    return new TimeSeries({
+      name: series.name(),
+      columns: series.columns(),
+      events: series._collection.addEvent(event)
+    })
+  }
+
   generateEmptyChartData(name) {
-    return {
+    return new TimeSeries({
       name,
       columns: ['time', 'value'],
-      points: []
-    }
+      events: []
+    })
   }
 
   componentWillUnmount() {
