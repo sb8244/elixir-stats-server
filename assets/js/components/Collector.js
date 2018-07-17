@@ -9,7 +9,6 @@ const style = styler([{ key: "value", color: "orange", width: 1 }]);
 
 class CombinedLineChart extends Component {
   state = {
-    tracker: null,
     trackerValue: null,
     trackerEvent: null
   }
@@ -46,7 +45,7 @@ class CombinedLineChart extends Component {
       ]
     })
 
-    if (this.state.tracker) {
+    if (this.props.tracker) {
       charts.push(this.renderMarker())
     }
 
@@ -54,13 +53,18 @@ class CombinedLineChart extends Component {
   }
 
   renderMarker() {
-    const { tracker, trackerEvent, trackerValue } = this.state
+    const { seriesContainer, tracker } = this.props
+
+    const series = Object.values(seriesContainer)[0]
+    const trackerEvent = series.atTime(tracker)
+    const trackerValue = trackerEvent.get('value')
+
     return (
       <EventMarker
         key="marker"
         type="flag"
         axis="y"
-        event={this.state.trackerEvent}
+        event={trackerEvent}
         column="value"
         info={[{ label: "Value", value: `${trackerValue}` }]}
         infoWidth={120}
@@ -82,10 +86,11 @@ class CombinedLineChart extends Component {
   }
 
   render() {
-    const { title } = this.props
+    const { clearTimeRange, onTimeRangeChanged, timeRange, title } = this.props
     const aggregates = this.getSeriesAggregates()
     // TODO: Set a 2 minute maximum on how far back this can go
-    const timeRange = new TimeRange([aggregates.begin - 30000, aggregates.end + 30000])
+    const fullTimeRange = new TimeRange([aggregates.begin - 30000, aggregates.end + 30000])
+    const usableTimeRange = timeRange || fullTimeRange
 
     return (
       <ChartContainer
@@ -96,16 +101,16 @@ class CombinedLineChart extends Component {
         timeAxisTickCount={5}
 
         /* Info box for currently hover point */
-        onTrackerChanged={this.handleTrackerChanged}
-        trackerPosition={this.state.tracker}
+        onTrackerChanged={this.props.handleTrackerChanged}
+        trackerPosition={this.props.tracker}
 
         /* Time range selection */
         enablePanZoom={true}
-        onTimeRangeChanged={timerange => this.setState({ timerange })}
-        timeRange={this.state.timerange || timeRange}
-        onBackgroundClick={() => this.setState({ timerange: null })}
-        maxTime={timeRange.end()}
-        minTime={timeRange.begin()}
+        onTimeRangeChanged={onTimeRangeChanged}
+        timeRange={usableTimeRange}
+        onBackgroundClick={clearTimeRange}
+        maxTime={fullTimeRange.end()}
+        minTime={fullTimeRange.begin()}
       >
         <ChartRow height="200">
           <YAxis id="y" min={aggregates.min - (aggregates.min * .05)} max={aggregates.max + (aggregates.max * .05)} />
@@ -130,22 +135,52 @@ function getTimeSeries(chartData) {
   })
 }
 
-export default () => (
-  <CommandHistoryStateContext.Consumer>
-  {
-    ({ getTitle }) => (
-      <CollectorStateContext.Consumer>
-      {
-        ({ chartData }) => {
-          const timeSeries = getTimeSeries(chartData)
+export default class Collector extends Component {
+  state = {
+    timerange: null,
+    tracker: null,
+  }
 
-          return timeSeries.map(({ id, seriesContainer }) => (
-            <CombinedLineChart key={id} seriesContainer={seriesContainer} title={id} />
-          ))
-        }
+  handleTrackerChanged = (tracker, scale) => {
+    if (tracker) {
+      this.setState({ tracker })
+    } else {
+      this.setState({ tracker: null })
+    }
+  }
+
+  render() {
+    const { tracker } = this.state
+
+    return (
+      <CommandHistoryStateContext.Consumer>
+      {
+        ({ getTitle }) => (
+          <CollectorStateContext.Consumer>
+          {
+            ({ chartData }) => {
+              const timeSeries = getTimeSeries(chartData)
+
+              return timeSeries.map(({ id, seriesContainer }) => (
+                <CombinedLineChart
+                  key={id}
+                  seriesContainer={seriesContainer}
+                  title={id}
+
+                  tracker={tracker}
+                  handleTrackerChanged={this.handleTrackerChanged}
+
+                  onTimeRangeChanged={(timerange) => this.setState({ timerange })}
+                  timeRange={this.state.timerange}
+                  clearTimeRange={() => this.setState({ timerange: null })}
+                />
+              ))
+            }
+          }
+          </CollectorStateContext.Consumer>
+        )
       }
-      </CollectorStateContext.Consumer>
+      </CommandHistoryStateContext.Consumer>
     )
   }
-  </CommandHistoryStateContext.Consumer>
-)
+}
