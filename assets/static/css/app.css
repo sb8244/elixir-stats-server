@@ -10,3 +10,14 @@
 .server-stats-list__entry {
   padding: 15px 40px;
 }
+
+.charts-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.chart-container {
+  width: 45%;
+}
