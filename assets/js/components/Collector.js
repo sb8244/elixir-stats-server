@@ -41,7 +41,7 @@ class CombinedLineChart extends Component {
       const series = seriesContainer[serverId]
 
       return [
-        /*<LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,*/
+        <LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,
         <ScatterChart key="scatter" axis="y" series={series} columns={['value']} style={style} />,
       ]
     })
