@@ -4,14 +4,12 @@ import { Presence } from 'phoenix'
 export const ServerListStateContext = createContext([])
 
 export default class ServerListState extends Component {
-  constructor(props) {
-    super(props)
+  state = {
+    presences: {}
+  }
 
-    const { channel } = props;
-
-    this.state = {
-      presences: {}
-    }
+  componentWillMount() {
+    const { channel } = this.props;
 
     channel.on("presence_state", state => {
       this.setState({ presences: Presence.syncState(this.state.presences, state) })
