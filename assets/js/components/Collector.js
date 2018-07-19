@@ -136,13 +136,11 @@ export default class Collector extends Component {
   }
 
   handleTrackerChanged = (tracker, scale) => {
-    requestAnimationFrame(() => {
-      if (tracker) {
-        this.setState({ tracker })
-      } else {
-        this.setState({ tracker: null })
-      }
-    })
+    if (tracker) {
+      this.setState({ tracker })
+    } else {
+      this.setState({ tracker: null })
+    }
   }
 
   render() {
