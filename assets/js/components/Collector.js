@@ -3,33 +3,7 @@ import { TimeRange } from "pondjs";
 import { Charts, ChartContainer, ChartRow, EventMarker, Resizable, YAxis, LineChart, ScatterChart, styler } from "react-timeseries-charts";
 
 import { CollectorStateContext } from './CollectorState'
-
-// https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
-const distinctGraphingColors = [
-  '#3cb44b', // green
-  '#800000', // maroon
-  '#0082c8', // blue
-  '#f58231', // orange
-  '#911eb4', // purple
-  '#e6194b', // red
-  '#46f0f0', // cyan
-  '#f032e6', // magenta
-  '#d2f53c', // lime
-  '#fabebe', // pink
-  '#008080', // teal
-  '#e6beff', // lavender
-  '#aa6e28', // brown
-  '#fffac8', // beige
-  '#ffe119', // yellow
-  '#aaffc3', // mint
-  '#808000', // olive
-  '#ffd8b1', // coral
-  '#000080', // navy
-  '#808080', // grey
-  '#000000', // black
-]
-
-const distinctGraphingColorsLength = distinctGraphingColors.length
+import { ServerColorStateContext } from './ServerColorState'
 
 class CombinedLineChart extends Component {
   state = {
@@ -38,12 +12,12 @@ class CombinedLineChart extends Component {
   }
 
   renderCharts() {
-    const { seriesContainer } = this.props
+    const { getColor, seriesContainer } = this.props
 
     const charts = Object.keys(seriesContainer).map((serverId, i) => {
       // TODO: Only include the chart if the serverId is in the selected list (or none selected)
       const series = seriesContainer[serverId]
-      const color = distinctGraphingColors[i % distinctGraphingColorsLength]
+      const color = getColor(serverId)
       const style = styler([{ key: "value", color: color, width: 1 }])
 
       return [
@@ -165,28 +139,35 @@ export default class Collector extends Component {
 
     return (
       <div className="charts-wrapper">
-        <CollectorStateContext.Consumer>
+        <ServerColorStateContext.Consumer>
         {
-          ({ chartData }) => {
-            const timeSeries = getTimeSeries(chartData)
+          ({ getColor }) => (
+            <CollectorStateContext.Consumer>
+            {
+              ({ chartData }) => {
+                const timeSeries = getTimeSeries(chartData)
 
-            return timeSeries.map(({ id, seriesContainer }) => (
-              <CombinedLineChart
-                key={id}
-                seriesContainer={seriesContainer}
-                title={id}
+                return timeSeries.map(({ id, seriesContainer }) => (
+                  <CombinedLineChart
+                    key={id}
+                    seriesContainer={seriesContainer}
+                    title={id}
+                    getColor={getColor}
 
-                tracker={tracker}
-                handleTrackerChanged={this.handleTrackerChanged}
+                    tracker={tracker}
+                    handleTrackerChanged={this.handleTrackerChanged}
 
-                onTimeRangeChanged={(timerange) => this.setState({ timerange })}
-                timeRange={this.state.timerange}
-                clearTimeRange={() => this.setState({ timerange: null })}
-              />
-            ))
-          }
+                    onTimeRangeChanged={(timerange) => this.setState({ timerange })}
+                    timeRange={this.state.timerange}
+                    clearTimeRange={() => this.setState({ timerange: null })}
+                  />
+                ))
+              }
+            }
+            </CollectorStateContext.Consumer>
+          )
         }
-        </CollectorStateContext.Consumer>
+        </ServerColorStateContext.Consumer>
       </div>
     )
   }
