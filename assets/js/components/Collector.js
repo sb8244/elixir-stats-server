@@ -4,7 +4,7 @@ import { throttle } from 'frame-throttle';
 import { Charts, ChartContainer, ChartRow, EventMarker, Resizable, YAxis, LineChart, ScatterChart, styler } from "react-timeseries-charts";
 
 import { CollectorStateContext } from './CollectorState'
-import { ServerColorStateContext } from './ServerColorState'
+import { ServerListStateContext } from './ServerListState'
 
 class CombinedLineChart extends Component {
   state = {
@@ -148,7 +148,7 @@ export default class Collector extends Component {
 
     return (
       <div className="charts-wrapper">
-        <ServerColorStateContext.Consumer>
+        <ServerListStateContext.Consumer>
         {
           ({ getColor }) => (
             <CollectorStateContext.Consumer>
@@ -176,7 +176,7 @@ export default class Collector extends Component {
             </CollectorStateContext.Consumer>
           )
         }
-        </ServerColorStateContext.Consumer>
+        </ServerListStateContext.Consumer>
       </div>
     )
   }
