@@ -4,7 +4,32 @@ import { Charts, ChartContainer, ChartRow, EventMarker, Resizable, YAxis, LineCh
 
 import { CollectorStateContext } from './CollectorState'
 
-const style = styler([{ key: "value", color: "orange", width: 1 }]);
+// https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
+const distinctGraphingColors = [
+  '#3cb44b', // green
+  '#0082c8', // blue
+  '#800000', // maroon
+  '#f58231', // orange
+  '#911eb4', // purple
+  '#e6194b', // red
+  '#46f0f0', // cyan
+  '#f032e6', // magenta
+  '#d2f53c', // lime
+  '#fabebe', // pink
+  '#008080', // teal
+  '#e6beff', // lavender
+  '#aa6e28', // brown
+  '#fffac8', // beige
+  '#ffe119', // yellow
+  '#aaffc3', // mint
+  '#808000', // olive
+  '#ffd8b1', // coral
+  '#000080', // navy
+  '#808080', // grey
+  '#000000', // black
+]
+
+const distinctGraphingColorsLength = distinctGraphingColors.length
 
 class CombinedLineChart extends Component {
   state = {
@@ -15,9 +40,11 @@ class CombinedLineChart extends Component {
   renderCharts() {
     const { seriesContainer } = this.props
 
-    const charts = Object.keys(seriesContainer).map((serverId) => {
+    const charts = Object.keys(seriesContainer).map((serverId, i) => {
       // TODO: Only include the chart if the serverId is in the selected list (or none selected)
       const series = seriesContainer[serverId]
+      const color = distinctGraphingColors[i % distinctGraphingColorsLength]
+      const style = styler([{ key: "value", color: color, width: 1 }])
 
       return [
         <LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,
