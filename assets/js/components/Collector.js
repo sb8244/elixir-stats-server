@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { TimeRange } from "pondjs";
+import { throttle } from 'frame-throttle';
 import { Charts, ChartContainer, ChartRow, EventMarker, Resizable, YAxis, LineChart, ScatterChart, styler } from "react-timeseries-charts";
 
 import { CollectorStateContext } from './CollectorState'
@@ -122,6 +123,16 @@ export default class Collector extends Component {
   state = {
     timerange: null,
     tracker: null,
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.handleTrackerChanged = throttle(this.handleTrackerChanged)
+  }
+
+  componentWillUnmount() {
+    this.handleTrackerChanged.cancel()
   }
 
   handleTrackerChanged = (tracker, scale) => {
