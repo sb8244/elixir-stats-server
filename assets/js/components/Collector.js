@@ -7,8 +7,8 @@ import { CollectorStateContext } from './CollectorState'
 // https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
 const distinctGraphingColors = [
   '#3cb44b', // green
-  '#0082c8', // blue
   '#800000', // maroon
+  '#0082c8', // blue
   '#f58231', // orange
   '#911eb4', // purple
   '#e6194b', // red
