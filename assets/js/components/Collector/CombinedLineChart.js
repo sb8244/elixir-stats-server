@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Charts, ChartContainer, ChartRow, EventMarker, Resizable, YAxis, LineChart, ScatterChart, styler } from "react-timeseries-charts";
+import { Charts, ChartContainer, ChartRow, Resizable, YAxis, LineChart, ScatterChart, styler } from "react-timeseries-charts";
 import { TimeRange } from "pondjs";
 
 export default class CombinedLineChart extends Component {
@@ -19,37 +19,11 @@ export default class CombinedLineChart extends Component {
 
       return [
         <LineChart key="line" axis="y" series={series} columns={['value']} style={style} />,
-        <ScatterChart key="scatter" axis="y" series={series} columns={['value']} style={style} />
+        <ScatterChart key="scatter" axis="y" series={series} columns={['value']} style={style} />,
       ]
     })
 
-    if (this.props.tracker) {
-      charts.push(this.renderMarker())
-    }
-
     return charts
-  }
-
-  renderMarker() {
-    const { seriesContainer, tracker } = this.props
-
-    const series = Object.values(seriesContainer)[0]
-    const trackerEvent = series.atTime(tracker)
-    const trackerValue = trackerEvent.get('value')
-
-    return (
-      <EventMarker
-        key="marker"
-        type="flag"
-        axis="y"
-        event={trackerEvent}
-        column="value"
-        info={[{ label: "Value", value: `${trackerValue}` }]}
-        infoWidth={120}
-        markerRadius={2}
-        markerStyle={{ fill: "black" }}
-      />
-    )
   }
 
   getSeriesAggregates() {
