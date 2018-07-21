@@ -42,6 +42,12 @@ export default class CollectorState extends Component {
     })
   }
 
+  clearData() {
+    this.setState({
+      chartData: {}
+    })
+  }
+
   appendChartEntry(series, event) {
     return new TimeSeries({
       name: series.name(),
@@ -63,8 +69,13 @@ export default class CollectorState extends Component {
   }
 
   render() {
+    const value = {
+      ...this.state,
+      clearData: this.clearData.bind(this)
+    }
+
     return (
-      <CollectorStateContext.Provider value={this.state}>
+      <CollectorStateContext.Provider value={value}>
         {this.props.children}
       </CollectorStateContext.Provider>
     )

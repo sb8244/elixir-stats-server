@@ -29,16 +29,14 @@ export default class Test extends Component {
     return (
       <div>
         <CommandHistoryState>
-          <ServerListState channel={channel}>
-            <ServerList />
-
-            <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
-            <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
-
-            <CollectorState channel={channel}>
+          <CollectorState channel={channel}>
+            <ServerListState channel={channel}>
+              <ServerList />
+              <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
+              <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
               <Collector />
-            </CollectorState>
-          </ServerListState>
+            </ServerListState>
+          </CollectorState>
         </CommandHistoryState>
       </div>
     )

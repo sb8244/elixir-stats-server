@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { CommandHistoryStateContext } from './CommandHistoryState'
+import { CollectorStateContext } from './CollectorState'
 import { allSystemStats, processCountStats } from '../commands'
 
 function dispatchCommand(channel, selectedApplicationNames, addHistory, commandGenerator, commandTitle) {
@@ -16,15 +17,28 @@ function dispatchCommand(channel, selectedApplicationNames, addHistory, commandG
   }
 }
 
+function confirmDeletion(doDelete) {
+  if (window.confirm('Are you sure you wish to clear this data?')) {
+    doDelete()
+  }
+}
+
 export default ({ channel, selectedApplicationNames }) => (
-  <CommandHistoryStateContext.Consumer>
+<CollectorStateContext.Consumer>
   {
-    ({ addHistory }) => (
-      <div>
-        <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, allSystemStats, 'Server Stats')}>Server Stats</button>
-        <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processCountStats, 'Process Counts')}>Process Counts</button>
-      </div>
+    ({ clearData }) => (
+      <CommandHistoryStateContext.Consumer>
+      {
+        ({ addHistory }) => (
+          <div>
+            <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, allSystemStats, 'Server Stats')}>Server Stats</button>
+            <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processCountStats, 'Process Counts')}>Process Counts</button>
+            <button onClick={() => confirmDeletion(clearData)}>Clear Charts</button>
+          </div>
+        )
+      }
+      </CommandHistoryStateContext.Consumer>
     )
   }
-  </CommandHistoryStateContext.Consumer>
+</CollectorStateContext.Consumer>
 )
