@@ -37,7 +37,6 @@ export default class CollectorState extends Component {
           }
         })
 
-        console.log('[new chart data]', newChartData)
         this.setState({ chartData: newChartData })
       }
     })

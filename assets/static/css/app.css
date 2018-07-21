@@ -26,5 +26,21 @@
 }
 
 .chart-container {
+  margin-bottom: 50px;
+  padding-bottom: 10px;
   width: 45%;
+
+  border-bottom: 1px solid #ccc;
+}
+
+.series-aggregates {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.series-aggregates__value {
+  flex-basis: 25%;
+  flex-grow: 1;
+  text-align: right;
 }
