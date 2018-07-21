@@ -29,10 +29,13 @@ export default ({ getColor, seriesContainer, timeRange, tracker }) => {
       cropped = series.crop(timeRange)
     }
 
-    row.average = cropped.avg('value').toFixed(1)
-    row.max = cropped.max('value').toFixed(1)
-    row.min = cropped.min('value').toFixed(1)
+    const avg = cropped.avg('value')
+    const max = cropped.max('value')
+    const min = cropped.min('value')
 
+    if (avg) { row.average = avg.toFixed(1) }
+    if (max) { row.max = max.toFixed(1) }
+    if (min) { row.min = min.toFixed(1) }
     if (tracker) {
       const trackerEvent = series.atTime(tracker)
       row.currentValue = trackerEvent.get('value')
