@@ -6,8 +6,8 @@ function renderRow() {
       <div className="color-legend-block" style={{background: color}} title={name} />
       <div className="series-aggregates__value">val: {currentValue || "-"}</div>
       <div className="series-aggregates__value">avg: {average || "-"}</div>
-      <div className="series-aggregates__value">max: {max || "-"}</div>
       <div className="series-aggregates__value">min: {min || "-"}</div>
+      <div className="series-aggregates__value">max: {max || "-"}</div>
     </div>
   )
 }
