@@ -41,5 +41,5 @@ export default ({ getColor, seriesContainer, timeRange, tracker }) => {
     return row
   })
 
-  return rows.map(renderRow())
+  return <div className="series-aggregates-wrapper">{rows.map(renderRow())}</div>
 }

@@ -33,6 +33,11 @@
   border-bottom: 1px solid #ccc;
 }
 
+.series-aggregates-wrapper {
+  max-height: 150px;
+  overflow: auto;
+}
+
 .series-aggregates {
   display: flex;
   flex-direction: row;
