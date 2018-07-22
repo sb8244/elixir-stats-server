@@ -26,14 +26,15 @@ defmodule StatsServerWeb.ServerChannel do
 
   def handle_in(
         "collect_results",
-        %{"command_id" => id, "encrypted_response" => resp, "server_id" => server_id},
+        %{"command_id" => id, "encrypted_response" => resp, "server_id" => server_id, "collected_at_ms" => collected_at_ms},
         socket = %{assigns: %{application_name: app_name}}
       ) do
     payload = %{
       application_name: app_name,
       command_id: id,
       encrypted_response: resp,
-      server_id: server_id
+      server_id: server_id,
+      collected_at_ms: collected_at_ms
     }
 
     StatsServerWeb.Endpoint.broadcast("client", "collect_results", payload)

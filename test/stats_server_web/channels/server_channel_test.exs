@@ -57,10 +57,10 @@ defmodule StatsServerWeb.ServerChannelTest do
     test "the server:application_name topic is broadcasted the encrypted command" do
       StatsServerWeb.Endpoint.subscribe("client")
 
-      ref = push(start_socket(), "collect_results", %{command_id: "a", encrypted_response: "b", server_id: "c"})
+      ref = push(start_socket(), "collect_results", %{command_id: "a", encrypted_response: "b", server_id: "c", collected_at_ms: 1})
       assert_reply(ref, :ok, %{})
 
-      expected_payload = %{application_name: "test", command_id: "a", encrypted_response: "b", server_id: "c"}
+      expected_payload = %{application_name: "test", command_id: "a", encrypted_response: "b", server_id: "c", collected_at_ms: 1}
       assert_receive %Phoenix.Socket.Broadcast{event: "collect_results", payload: ^expected_payload, topic: "client"}
     end
   end
