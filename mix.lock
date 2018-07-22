@@ -5,6 +5,7 @@
   "gettext": {:hex, :gettext, "0.15.0", "40a2b8ce33a80ced7727e36768499fc9286881c43ebafccae6bab731e2b2b8ce", [:mix], [], "hexpm"},
   "mime": {:hex, :mime, "1.3.0", "5e8d45a39e95c650900d03f897fbf99ae04f60ab1daa4a34c7a20a5151b7a5fe", [:mix], [], "hexpm"},
   "mockery": {:hex, :mockery, "2.2.0", "67304d5e1d247e698b171913689369bd23c94e437b4a8f32777c6f74b98cb36f", [:mix], [], "hexpm"},
+  "pane": {:hex, :pane, "0.3.0", "7b028e2aa8f004b62a965de983d824ad20d94f3c9c82b2bb4a9cdcebeb9e7060", [:mix], [], "hexpm"},
   "phoenix": {:hex, :phoenix, "1.3.3", "bafb5fa408d202e8d9f739e781bdb908446a2c1c1e00797c1158918ed55566a4", [:mix], [{:cowboy, "~> 1.0", [hex: :cowboy, repo: "hexpm", optional: true]}, {:phoenix_pubsub, "~> 1.0", [hex: :phoenix_pubsub, repo: "hexpm", optional: false]}, {:plug, "~> 1.3.3 or ~> 1.4", [hex: :plug, repo: "hexpm", optional: false]}, {:poison, "~> 2.2 or ~> 3.0", [hex: :poison, repo: "hexpm", optional: false]}], "hexpm"},
   "phoenix_gen_socket_client": {:hex, :phoenix_gen_socket_client, "2.1.1", "0432beccf3ff3b7fbf4c033588d01c9819cbdf7f087dbd1e7e90d3945d05f95e", [:mix], [{:poison, "~> 2.0 or ~> 3.0", [hex: :poison, repo: "hexpm", optional: true]}, {:websocket_client, "~> 1.2", [hex: :websocket_client, repo: "hexpm", optional: true]}], "hexpm"},
   "phoenix_html": {:hex, :phoenix_html, "2.11.2", "86ebd768258ba60a27f5578bec83095bdb93485d646fc4111db8844c316602d6", [:mix], [{:plug, "~> 1.5", [hex: :plug, repo: "hexpm", optional: false]}], "hexpm"},
@@ -13,7 +14,9 @@
   "plug": {:hex, :plug, "1.6.0", "90d338a44c8cd762c32d3ea324f6728445c6145b51895403854b77f1536f1617", [:mix], [{:cowboy, "~> 1.0.1 or ~> 1.1 or ~> 2.4", [hex: :cowboy, repo: "hexpm", optional: true]}, {:mime, "~> 1.0", [hex: :mime, repo: "hexpm", optional: false]}], "hexpm"},
   "poison": {:hex, :poison, "2.2.0", "4763b69a8a77bd77d26f477d196428b741261a761257ff1cf92753a0d4d24a63", [:mix], [], "hexpm"},
   "ranch": {:hex, :ranch, "1.3.2", "e4965a144dc9fbe70e5c077c65e73c57165416a901bd02ea899cfd95aa890986", [:rebar3], [], "hexpm"},
-  "stats_agent": {:git, "https://github.com/sb8244/elixir-stats-agent.git", "3becde8fcdf1c860980d8f35fd5b4866fb6c3b2f", []},
+  "recon": {:hex, :recon, "2.3.6", "2bcad0cf621fb277cabbb6413159cd3aa30265c2dee42c968697988b30108604", [:rebar3], [], "hexpm"},
+  "scribe": {:hex, :scribe, "0.8.0", "41ead349dc2f89b8f6b4596633f829340e7e5fcbee3e7eb3642fd031dd21142a", [:mix], [{:pane, "~> 0.2", [hex: :pane, repo: "hexpm", optional: false]}], "hexpm"},
+  "stats_agent": {:git, "https://github.com/sb8244/elixir-stats-agent.git", "9d21fa500bb99abd474f8a0cfc9019a9540f34a5", []},
   "websocket_client": {:hex, :websocket_client, "1.3.0", "2275d7daaa1cdacebf2068891c9844b15f4fdc3de3ec2602420c2fb486db59b6", [:rebar3], [], "hexpm"},
   "websockex": {:hex, :websockex, "0.4.1", "d7b7191ec3d5dd136683b60114405a5a130a175faade773a07cb52dbd98f9442", [:mix], [], "hexpm"},
 }
