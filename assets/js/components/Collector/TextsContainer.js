@@ -40,7 +40,7 @@ export default class TextsContainer extends Component {
       <div className="texts-container">
         <div className="server-tabs">
         {
-          Object.keys(plainTextLogs).map((serverId) => (
+          Object.keys(plainTextLogs).sort().map((serverId) => (
             <button key={serverId} onClick={() => this.setState({ selectedServer: serverId })}>{serverId}</button>
           ))
         }
