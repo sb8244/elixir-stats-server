@@ -13,7 +13,8 @@ export default class CollectorState extends Component {
     const { channel } = props;
 
     this.state = {
-      chartData: {}
+      chartData: {},
+      plainTextLogs: {}
     }
 
     channel.on('collect_results', (evt) => {
@@ -38,6 +39,24 @@ export default class CollectorState extends Component {
         })
 
         this.setState({ chartData: newChartData })
+      } else if (decrypted.startsWith('text|')) {
+        const plainText = decrypted.replace('text|', '')
+        const plainTextLogs = this.state.plainTextLogs
+        const logsContainer = plainTextLogs[evt.server_id] || []
+        const newLog = {
+          collectedAtMs: evt.collected_at_ms,
+          serverId: evt.server_id,
+          text: plainText
+        }
+        const newLogsContainer = [newLog].concat(logsContainer)
+
+        const newPlainTextLogs = {
+          ...plainTextLogs,
+          [evt.server_id]: newLogsContainer
+        }
+
+        this.setState({ plainTextLogs: newPlainTextLogs })
+        console.log(newLog)
       }
     })
   }

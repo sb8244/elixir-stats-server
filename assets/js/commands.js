@@ -14,6 +14,13 @@ export function processCountStats() {
   }
 }
 
+export function processList() {
+  return {
+    command_id: randomCommandId(),
+    encrypted_command: encryptPayload('process_list')
+  }
+}
+
 function randomCommandId() {
   return Math.random().toString(36).substring(2)
 }

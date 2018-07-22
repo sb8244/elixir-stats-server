@@ -2,7 +2,7 @@ import React from 'react'
 
 import { CommandHistoryStateContext } from './CommandHistoryState'
 import { CollectorStateContext } from './CollectorState'
-import { allSystemStats, processCountStats } from '../commands'
+import { allSystemStats, processCountStats, processList } from '../commands'
 
 function dispatchCommand(channel, selectedApplicationNames, addHistory, commandGenerator, commandTitle) {
   return () => {
@@ -34,6 +34,7 @@ export default ({ channel, selectedApplicationNames }) => (
             <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, allSystemStats, 'Server Stats')}>Server Stats</button>
             <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processCountStats, 'Process Counts')}>Process Counts</button>
             <button onClick={() => confirmDeletion(clearData)}>Clear Charts</button>
+            <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processList, 'Process List')}>Process List</button>
           </div>
         )
       }
