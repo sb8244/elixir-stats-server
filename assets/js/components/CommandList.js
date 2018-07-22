@@ -26,15 +26,17 @@ function confirmDeletion(doDelete) {
 export default ({ channel, selectedApplicationNames }) => (
 <CollectorStateContext.Consumer>
   {
-    ({ clearData }) => (
+    ({ clearData, clearPlainTextLogs }) => (
       <CommandHistoryStateContext.Consumer>
       {
         ({ addHistory }) => (
-          <div>
+          <div className="command-list">
             <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, allSystemStats, 'Server Stats')}>Server Stats</button>
             <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processCountStats, 'Process Counts')}>Process Counts</button>
-            <button onClick={() => confirmDeletion(clearData)}>Clear Charts</button>
             <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processList, 'Process List')}>Process List</button>
+            <span className="command-list__vertical-break" />
+            <button onClick={() => confirmDeletion(clearData)}>Clear Charts</button>
+            <button onClick={() => confirmDeletion(clearPlainTextLogs)}>Clear Text Data</button>
           </div>
         )
       }

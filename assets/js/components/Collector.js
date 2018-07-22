@@ -4,6 +4,7 @@ import { CollectorStateContext } from './CollectorState'
 import { ServerListStateContext } from './ServerListState'
 
 import ChartContainer from './Collector/ChartContainer'
+import TextsContainer from './Collector/TextsContainer'
 
 export default () => (
   <div className="charts-wrapper">
@@ -12,8 +13,9 @@ export default () => (
       ({ getColor }) => (
         <CollectorStateContext.Consumer>
         {
-          ({ chartData }) => ([
-            <ChartContainer key='chart-container' getColor={getColor} chartData={chartData} />
+          ({ chartData, plainTextLogs }) => ([
+            <ChartContainer key='chart-container' getColor={getColor} chartData={chartData} />,
+            <TextsContainer key='texts-container' getColor={getColor} plainTextLogs={plainTextLogs} />,
           ])
         }
         </CollectorStateContext.Consumer>

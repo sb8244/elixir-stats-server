@@ -1,3 +1,14 @@
+.command-list {
+  margin-bottom: 50px;
+}
+
+.command-list__vertical-break {
+  margin-left: 20px;
+  margin-right: 20px;
+
+  border-left: 1px solid;
+}
+
 .server-list-wrapper {
   max-height: 300px;
   overflow: auto;

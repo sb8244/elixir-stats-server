@@ -63,12 +63,17 @@ export default class CollectorState extends Component {
     }
 
     this.setState({ plainTextLogs: newPlainTextLogs })
-    console.log(newLog.serverId, newLog.collectedAtMs, newLog.text)
   }
 
   clearData() {
     this.setState({
       chartData: {}
+    })
+  }
+
+  clearPlainTextLogs() {
+    this.setState({
+      plainTextLogs: {}
     })
   }
 
@@ -95,7 +100,8 @@ export default class CollectorState extends Component {
   render() {
     const value = {
       ...this.state,
-      clearData: this.clearData.bind(this)
+      clearData: this.clearData.bind(this),
+      clearPlainTextLogs: this.clearPlainTextLogs.bind(this)
     }
 
     return (
