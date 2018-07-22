@@ -7,58 +7,63 @@ import { decryptPayload } from '../encryption'
 export const CollectorStateContext = createContext({})
 
 export default class CollectorState extends Component {
-  constructor(props) {
-    super(props)
+  state = {
+    chartData: {},
+    plainTextLogs: {}
+  }
 
-    const { channel } = props;
-
-    this.state = {
-      chartData: {},
-      plainTextLogs: {}
-    }
-
+  componentDidMount() {
+    const { channel } = this.props
     channel.on('collect_results', (evt) => {
       const decrypted = decryptPayload(evt.encrypted_response);
 
       if (decrypted.startsWith('stats|')) {
-        const decryptedPayload = JSON.parse(decrypted.replace('stats|', ''))
-        let newChartData = this.state.chartData
-
-        decryptedPayload.stats.forEach(({ label, value }) => {
-          const seriesContainer = newChartData[label] || {}
-          const series = seriesContainer[evt.server_id] || this.generateEmptyChartData(label)
-          const newSeries = this.appendChartEntry(series, new TimeEvent(decryptedPayload.collected_at_ms, value))
-
-          newChartData = {
-            ...newChartData,
-            [label]: {
-              ...seriesContainer,
-              [evt.server_id]: newSeries
-            }
-          }
-        })
-
-        this.setState({ chartData: newChartData })
+        this.collectStats(decrypted, evt)
       } else if (decrypted.startsWith('text|')) {
-        const plainText = decrypted.replace('text|', '')
-        const plainTextLogs = this.state.plainTextLogs
-        const logsContainer = plainTextLogs[evt.server_id] || []
-        const newLog = {
-          collectedAtMs: evt.collected_at_ms,
-          serverId: evt.server_id,
-          text: plainText
-        }
-        const newLogsContainer = [newLog].concat(logsContainer)
-
-        const newPlainTextLogs = {
-          ...plainTextLogs,
-          [evt.server_id]: newLogsContainer
-        }
-
-        this.setState({ plainTextLogs: newPlainTextLogs })
-        console.log(newLog)
+        this.collectTextLog(decrypted, evt)
       }
     })
+  }
+
+  collectStats(decrypted, evt) {
+    const decryptedPayload = JSON.parse(decrypted.replace('stats|', ''))
+    let newChartData = this.state.chartData
+
+    decryptedPayload.stats.forEach(({ label, value }) => {
+      const seriesContainer = newChartData[label] || {}
+      const series = seriesContainer[evt.server_id] || this.generateEmptyChartData(label)
+      const newSeries = this.appendChartEntry(series, new TimeEvent(decryptedPayload.collected_at_ms, value))
+
+      newChartData = {
+        ...newChartData,
+        [label]: {
+          ...seriesContainer,
+          [evt.server_id]: newSeries
+        }
+      }
+    })
+
+    this.setState({ chartData: newChartData })
+  }
+
+  collectTextLog(decrypted, evt) {
+    const plainText = decrypted.replace('text|', '')
+    const plainTextLogs = this.state.plainTextLogs
+    const logsContainer = plainTextLogs[evt.server_id] || []
+    const newLog = {
+      collectedAtMs: evt.collected_at_ms,
+      serverId: evt.server_id,
+      text: plainText
+    }
+    const newLogsContainer = [newLog].concat(logsContainer)
+
+    const newPlainTextLogs = {
+      ...plainTextLogs,
+      [evt.server_id]: newLogsContainer
+    }
+
+    this.setState({ plainTextLogs: newPlainTextLogs })
+    console.log(newLog.serverId, newLog.collectedAtMs, newLog.text)
   }
 
   clearData() {
