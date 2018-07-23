@@ -1,0 +1,31 @@
+{
+  "name": "Elixir Stats Server",
+  "description": "Middleman server that provides sockets and an interface for Elixir based Application Performance Monitoring",
+  "keywords": [
+    "elixir",
+    "monitoring"
+  ],
+  "repository": "https://github.com/sb8244/elixir-stats-server",
+  "env": {
+    "APPLICATION_NAMES_CSV": {
+      "description": "A comma separated list of application names",
+      "value": ""
+    },
+    "CLIENT_SOCKET_AUTHENTICATION_SECRET": {
+      "description": "The secret needed to connect to the UI websocket",
+      "generator": "secret"
+    },
+    "SERVER_SOCKET_AUTHENTICATION_SECRET": {
+      "description": "The secret needed to connect to the Server APM websocket",
+      "generator": "secret"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/gjaldon/heroku-buildpack-phoenix-static.git"
+    },
+    {
+      "url": "https://github.com/HashNuke/heroku-buildpack-elixir.git"
+    }
+  ]
+}
