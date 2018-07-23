@@ -27,6 +27,10 @@
   overflow: auto;
 }
 
+.server-list-wrapper .color-legend-block {
+  margin-left: 10px;
+}
+
 .application-list-wrapper {
   max-height: 150px;
   overflow: auto;

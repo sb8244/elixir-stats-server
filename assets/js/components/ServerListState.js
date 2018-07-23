@@ -38,6 +38,8 @@ export default class ServerListState extends Component {
     // Color cache must be kept here due to state updating dependencies
     colorCache: {},
     currentColorIndex: 0,
+
+    selectedServerIds: [],
   }
 
   componentWillMount() {
@@ -91,10 +93,29 @@ export default class ServerListState extends Component {
     return servers
   }
 
+  setServerSelected = (serverId, selected) => {
+    const { selectedServerIds } = this.state
+
+    if (selected) {
+      this.setState({
+        selectedServerIds: [serverId].concat(selectedServerIds)
+      })
+    } else {
+      this.setState({
+        selectedServerIds: selectedServerIds.filter((id) => id !== serverId)
+      })
+    }
+  }
+
   render() {
-    const { presences } = this.state
+    const { presences, selectedServerIds } = this.state
     const servers = this.getServersFromPresences(presences)
-    const value = { getColor: this.getColor, servers }
+    const value = {
+      getColor: this.getColor,
+      setServerSelected: this.setServerSelected,
+      servers,
+      selectedServerIds
+    }
 
     return (
       <ServerListStateContext.Provider value={value}>
