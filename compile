@@ -1,2 +1,2 @@
 npm run deploy
-mix phx.digest
+mix phoenix.digest
