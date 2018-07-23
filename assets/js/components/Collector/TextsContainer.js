@@ -22,14 +22,15 @@ export default class TextsContainer extends Component {
 
   render() {
     const { getColor, plainTextLogs } = this.props
-    const selectedServer = this.state.selectedServer || Object.keys(plainTextLogs)[0]
+    const sortedServerIds = Object.keys(plainTextLogs).sort()
+    const selectedServer = this.state.selectedServer || sortedServerIds[0]
     const displayLogs = plainTextLogs[selectedServer]
 
     return (
       <div className="texts-container">
         <Menu>
         {
-          Object.keys(plainTextLogs).sort().map((serverId) => (
+          sortedServerIds.map((serverId) => (
             <Menu.Item
               key={serverId}
               name={serverId}
