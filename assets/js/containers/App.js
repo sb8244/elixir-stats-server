@@ -36,10 +36,10 @@ export default class Test extends Component {
             <ServerListState channel={channel}>
               <div className="app-sidebar">
                 <ServerList />
-              </div>
-              <div className="app-content">
                 <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
                 <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
+              </div>
+              <div className="app-content">
                 <Collector />
               </div>
             </ServerListState>

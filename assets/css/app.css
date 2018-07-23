@@ -22,20 +22,25 @@
   overflow: auto;
 }
 
-.command-list {
-  margin-bottom: 50px;
-}
-
-.command-list__vertical-break {
-  margin-left: 20px;
-  margin-right: 20px;
-
-  border-left: 1px solid;
-}
-
 .server-list-wrapper {
   max-height: 300px;
   overflow: auto;
+}
+
+.application-list-wrapper {
+  max-height: 150px;
+  overflow: auto;
+  padding-top: 10px;
+
+  border-bottom: 1px solid #eee;
+}
+
+.command-list-wrapper {
+  padding-top: 10px;
+}
+
+.command-list > button.button {
+  margin-bottom: 5px;
 }
 
 .server-stats-list {

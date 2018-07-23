@@ -8,7 +8,7 @@ export default () => (
   {
     ({ getColor, servers }) => (
       <div className="server-list-wrapper">
-        <h1>Servers ({servers.length})</h1>
+        <h2>Servers ({servers.length})</h2>
         <ul>
           {
             sortBy(servers, 'server_id').map(({ server_id }) => (

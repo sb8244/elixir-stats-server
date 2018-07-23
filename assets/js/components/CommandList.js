@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'semantic-ui-react'
 
 import { CommandHistoryStateContext } from './CommandHistoryState'
 import { CollectorStateContext } from './CollectorState'
@@ -23,25 +24,31 @@ function confirmDeletion(doDelete) {
   }
 }
 
-export default ({ channel, selectedApplicationNames }) => (
-<CollectorStateContext.Consumer>
-  {
-    ({ clearData, clearPlainTextLogs }) => (
-      <CommandHistoryStateContext.Consumer>
+export default ({ channel, selectedApplicationNames }) => {
+  const disabled = selectedApplicationNames.length === 0
+
+  return (
+    <CollectorStateContext.Consumer>
       {
-        ({ addHistory }) => (
-          <div className="command-list">
-            <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, allSystemStats, 'Server Stats')}>Server Stats</button>
-            <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processCountStats, 'Process Counts')}>Process Counts</button>
-            <button onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processList, 'Process List')}>Process List</button>
-            <span className="command-list__vertical-break" />
-            <button onClick={() => confirmDeletion(clearData)}>Clear Charts</button>
-            <button onClick={() => confirmDeletion(clearPlainTextLogs)}>Clear Text Data</button>
-          </div>
+        ({ clearData, clearPlainTextLogs }) => (
+          <CommandHistoryStateContext.Consumer>
+          {
+            ({ addHistory }) => (
+              <div className="command-list-wrapper">
+                <div className="command-list">
+                  <Button disabled={disabled} basic fluid onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, allSystemStats, 'Server Stats')}>Server Stats</Button>
+                  <Button disabled={disabled} basic fluid onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processCountStats, 'Process Counts')}>Process Counts</Button>
+                  <Button disabled={disabled} basic fluid onClick={dispatchCommand(channel, selectedApplicationNames, addHistory, processList, 'Process List')}>Process List</Button>
+
+                  <Button basic color='red' fluid onClick={() => confirmDeletion(clearData)}>Clear Charts</Button>
+                  <Button basic color='red' fluid onClick={() => confirmDeletion(clearPlainTextLogs)}>Clear Text Data</Button>
+                </div>
+              </div>
+            )
+          }
+          </CommandHistoryStateContext.Consumer>
         )
       }
-      </CommandHistoryStateContext.Consumer>
-    )
-  }
-</CollectorStateContext.Consumer>
-)
+    </CollectorStateContext.Consumer>
+  )
+}

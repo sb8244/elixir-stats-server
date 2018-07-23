@@ -1,29 +1,18 @@
 import React, { Component } from 'react'
+import { Menu } from 'semantic-ui-react'
 
-const renderLogs = ({ getColor, serverId, logs }) => {
+const renderLogs = ({ serverId, logs }) => {
   if (!logs) {
     return null
   }
 
-  return (
-    <div>
-      <h3>
-        <span className="color-legend-block" style={{background: getColor(serverId)}} title={serverId} />
-        <span>{serverId}</span>
-      </h3>
-      <div>
-      {
-        logs.map(({ collectedAtMs, text }) => (
-          <div key={`${serverId}-${collectedAtMs}`}>
-            <pre>
-            {text}
-            </pre>
-          </div>
-        ))
-      }
-      </div>
+  return logs.map(({ collectedAtMs, text }) => (
+    <div key={`${serverId}-${collectedAtMs}`}>
+      <pre>
+      {text}
+      </pre>
     </div>
-  )
+  ))
 }
 
 export default class TextsContainer extends Component {
@@ -38,15 +27,23 @@ export default class TextsContainer extends Component {
 
     return (
       <div className="texts-container">
-        <div className="server-tabs">
+        <Menu>
         {
           Object.keys(plainTextLogs).sort().map((serverId) => (
-            <button key={serverId} onClick={() => this.setState({ selectedServer: serverId })}>{serverId}</button>
+            <Menu.Item
+              key={serverId}
+              name={serverId}
+              active={selectedServer === serverId}
+              onClick={() => this.setState({ selectedServer: serverId })}
+            >
+              <span className="color-legend-block" style={{background: getColor(serverId)}} title={serverId} />
+              {serverId}
+            </Menu.Item>
           ))
         }
-        </div>
+        </Menu>
         <div>
-          { renderLogs({ getColor, serverId: selectedServer, logs: displayLogs }) }
+          { renderLogs({ serverId: selectedServer, logs: displayLogs }) }
         </div>
       </div>
     )

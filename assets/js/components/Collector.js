@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Menu } from 'semantic-ui-react'
 
 import { CollectorStateContext } from './CollectorState'
 import { ServerListStateContext } from './ServerListState'
@@ -19,10 +20,22 @@ export default class Collector extends Component {
 
     return (
       <div>
-        <div className="collector-header">
-          <button onClick={() => this.setState({ selectedTab: CHART_TAB })}>Charts</button>
-          <button onClick={() => this.setState({ selectedTab: TEXTS_TAB })}>Text Outputs</button>
-        </div>
+        <Menu>
+          <Menu.Item
+            name='charts'
+            active={selectedTab === CHART_TAB}
+            onClick={() => this.setState({ selectedTab: CHART_TAB })}
+          >
+            Charts
+          </Menu.Item>
+          <Menu.Item
+            name='texts'
+            active={selectedTab === TEXTS_TAB}
+            onClick={() => this.setState({ selectedTab: TEXTS_TAB })}
+          >
+            Text Logs
+          </Menu.Item>
+        </Menu>
         <div className="collector-view-wrap">
           <ServerListStateContext.Consumer>
           {

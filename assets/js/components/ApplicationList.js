@@ -37,17 +37,20 @@ export default class ApplicationList extends Component {
     const { applications, selected } = this.state
 
     return (
-      <ul>
-        {
-          applications.map((name) => (
-            <li key={name}>
-              <input type="checkbox" checked={selected.includes(name)} onChange={this.handleSelection(name)} />
-              &nbsp;
-              {name}
-            </li>
-          ))
-        }
-      </ul>
+      <div className="application-list-wrapper">
+        <h2>Applications ({applications.length})</h2>
+        <ul>
+          {
+            applications.map((name) => (
+              <li key={name}>
+                <input type="checkbox" checked={selected.includes(name)} onChange={this.handleSelection(name)} />
+                &nbsp;
+                {name}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     )
   }
 }
