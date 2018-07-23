@@ -4,6 +4,7 @@ use Mix.Config
 # you can enable the server option below.
 config :stats_server, StatsServerWeb.Endpoint,
   http: [port: 4001],
+  url: [host: "localhost"],
   server: false
 
 config :stats_server, StatsServer.Config,

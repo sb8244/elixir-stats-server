@@ -16,7 +16,6 @@ use Mix.Config
 config :stats_server, StatsServerWeb.Endpoint,
   load_from_system_env: true,
   cache_static_manifest: "priv/static/cache_manifest.json",
-  secret_key_base: {:system, "SECRET_KEY_BASE"}
 
 config :phoenix, :serve_endpoints, true
 

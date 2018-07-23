@@ -9,8 +9,6 @@ config :stats_server, env: Mix.env()
 
 # Configures the endpoint
 config :stats_server, StatsServerWeb.Endpoint,
-  url: [host: "localhost"],
-  secret_key_base: "rZG9/sSN3UwykztkDobrlfhewMjx35onJw02Zd7xyCcr5YEL47fVpdJ1hPiPAa/b",
   render_errors: [view: StatsServerWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: StatsServer.PubSub, adapter: Phoenix.PubSub.PG2]
 
