@@ -8,7 +8,8 @@ defmodule StatsServerWeb.ClientSocket do
   transport(
     :websocket,
     Phoenix.Transports.WebSocket,
-    check_origin: false
+    check_origin: false,
+    timeout: 45_000
   )
 
   def connect(%{"token" => token}, socket) do
