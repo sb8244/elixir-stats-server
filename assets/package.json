@@ -17,6 +17,7 @@
     "pondjs": "^0.8.9",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-event-observer": "^0.5.11",
     "react-timeseries-charts": "^0.15.2",
     "semantic-ui-css": "^2.3.3",
     "semantic-ui-react": "^0.82.1"

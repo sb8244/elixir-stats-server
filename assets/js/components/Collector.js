@@ -7,12 +7,29 @@ import { ServerListStateContext } from './ServerListState'
 import ChartContainer from './Collector/ChartContainer'
 import TextsContainer from './Collector/TextsContainer'
 
-const CHART_TAB = 'charts'
-const TEXTS_TAB = 'texts'
+import observer from './observer'
+
+export const CHART_TAB = 'charts'
+export const TEXTS_TAB = 'texts'
+const VALID_TABS = [CHART_TAB, TEXTS_TAB]
 
 export default class Collector extends Component {
   state = {
     selectedTab: CHART_TAB
+  }
+
+  componentDidMount() {
+    this.tabListener = observer.subscribe('collectorTabChange', (selectedTab) => {
+      if (VALID_TABS.includes(selectedTab)) {
+        this.setState({
+          selectedTab
+        })
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this.tabListener.unsubscribe()
   }
 
   render() {
