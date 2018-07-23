@@ -1,8 +1,11 @@
 defmodule StatsServer.Application do
   use Application
 
+  alias StatsServer.Config
+
   def start(_type, _args) do
     import Supervisor.Spec
+    ensure_configured!()
 
     children =
       [
@@ -40,4 +43,18 @@ defmodule StatsServer.Application do
   end
 
   def children(_), do: []
+
+  defp ensure_configured!() do
+    if Config.client_socket_authentication_secret() == nil do
+      throw "Config.client_socket_authentcation_secret is not set. You can set this using CLIENT_SOCKET_AUTHENTICATION_SECRET"
+    end
+
+    if Config.server_socket_authentication_secret() == nil do
+      throw "Config.server_socket_authentication_secret is not set. You can set this using SERVER_SOCKET_AUTHENTICATION_SECRET"
+    end
+
+    if length(Config.application_names()) == 0 do
+      throw "Config.application_names is not set. You can set this using APPLICATION_NAMES_CSV"
+    end
+  end
 end

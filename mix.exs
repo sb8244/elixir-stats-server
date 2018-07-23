@@ -39,8 +39,9 @@ defmodule StatsServer.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:mockery, "~> 2.2.0", runtime: false},
-      {:stats_agent, git: "https://github.com/sb8244/elixir-stats-agent.git"}
-      # {:stats_agent, path: "../stats_agent"}
+      {:stats_agent, git: "https://github.com/sb8244/elixir-stats-agent.git"},
+      # {:stats_agent, path: "../stats_agent"},
+      {:distillery, "~> 1.5", runtime: false},
     ]
   end
 end

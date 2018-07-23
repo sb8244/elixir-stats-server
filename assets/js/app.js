@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { allSystemStats } from './commands'
-import App from './containers/app'
+import App from './containers/App'
 
 const socket = new Socket('/client_socket', { params: { token: 'dev' } })
 

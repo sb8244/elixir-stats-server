@@ -1,0 +1,27 @@
+.dockerignore
+.git
+.gitignore
+.log
+tmp
+docker
+releases
+cover
+scripts
+db_init
+
+# Mix artifacts
+_build
+deps
+*.ez
+
+# VM crashes
+erl_crash.dump
+
+# Phoenix asset related
+node_modules
+assets/node_modules
+
+doc
+
+log/
+releases/

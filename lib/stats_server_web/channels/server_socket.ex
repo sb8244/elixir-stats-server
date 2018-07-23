@@ -5,7 +5,11 @@ defmodule StatsServerWeb.ServerSocket do
   channel("server:*", StatsServerWeb.ServerChannel)
 
   ## Transports
-  transport(:websocket, Phoenix.Transports.WebSocket)
+  transport(
+    :websocket,
+    Phoenix.Transports.WebSocket,
+    check_origin: false
+  )
 
   def connect(%{"application_name" => app_name, "server_id" => server_id, "token" => token}, socket) do
     if token == StatsServer.Config.server_socket_authentication_secret() do
