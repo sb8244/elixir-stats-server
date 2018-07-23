@@ -76,3 +76,9 @@ consistency in deployment and being able to deploy on Heroku or kubernetes easil
 ## Deploy
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+## Setup
+
+TODO
+
+Agent code is at https://github.com/sb8244/elixir-stats-agent
