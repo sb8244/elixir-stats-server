@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Checkbox } from 'semantic-ui-react'
 
 export default class ApplicationList extends Component {
   constructor(props) {
@@ -43,9 +44,7 @@ export default class ApplicationList extends Component {
           {
             applications.map((name) => (
               <li key={name}>
-                <input type="checkbox" checked={selected.includes(name)} onChange={this.handleSelection(name)} />
-                &nbsp;
-                {name}
+                <Checkbox type="checkbox" checked={selected.includes(name)} onChange={this.handleSelection(name)} label={name} />
               </li>
             ))
           }

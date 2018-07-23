@@ -27,8 +27,9 @@
   overflow: auto;
 }
 
-.server-list-wrapper .color-legend-block {
-  margin-left: 10px;
+.server-list-wrapper ul {
+  list-style: none;
+  padding-left: 20px;
 }
 
 .application-list-wrapper {
@@ -37,6 +38,11 @@
   padding-top: 10px;
 
   border-bottom: 1px solid #eee;
+}
+
+.application-list-wrapper ul {
+  list-style: none;
+  padding-left: 20px;
 }
 
 .command-list-wrapper {

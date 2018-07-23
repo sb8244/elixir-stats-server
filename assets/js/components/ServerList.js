@@ -14,9 +14,16 @@ export default () => (
           {
             sortBy(servers, 'server_id').map(({ server_id }) => (
               <li key={server_id}>
-                <Checkbox checked={selectedServerIds.includes(server_id)} onChange={(evt, { checked }) => setServerSelected(server_id, checked)} />
-                <span className="color-legend-block" style={{background: getColor(server_id)}} title={server_id} />
-                <span>{server_id}</span>
+                <Checkbox
+                  checked={selectedServerIds.includes(server_id)}
+                  label={
+                    <label>
+                      <span className="color-legend-block" style={{background: getColor(server_id)}} title={server_id} />
+                      {server_id}
+                    </label>
+                  }
+                  onChange={(evt, { checked }) => setServerSelected(server_id, checked)}
+                />
               </li>
             ))
           }
