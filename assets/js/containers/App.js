@@ -8,6 +8,9 @@ import Collector from '../components/Collector'
 import CollectorState from '../components/CollectorState'
 import CommandHistoryState from '../components/CommandHistoryState'
 
+import '../../css/app.css'
+import 'semantic-ui-css/semantic.min.css'
+
 export default class Test extends Component {
   constructor(props) {
     super(props)
@@ -27,14 +30,18 @@ export default class Test extends Component {
     const { selectedApplicationNames } = this.state;
 
     return (
-      <div>
+      <div className="app-container">
         <CommandHistoryState>
           <CollectorState channel={channel}>
             <ServerListState channel={channel}>
-              <ServerList />
-              <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
-              <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
-              <Collector />
+              <div className="app-sidebar">
+                <ServerList />
+              </div>
+              <div className="app-content">
+                <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
+                <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
+                <Collector />
+              </div>
             </ServerListState>
           </CollectorState>
         </CommandHistoryState>

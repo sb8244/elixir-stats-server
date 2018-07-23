@@ -17,7 +17,9 @@
     "pondjs": "^0.8.9",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-timeseries-charts": "^0.15.2"
+    "react-timeseries-charts": "^0.15.2",
+    "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.82.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -27,8 +29,11 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
     "jasmine-check": "^1.0.0-rc.0",
     "jest": "^23.3.0",
+    "style-loader": "^0.21.0",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8"
   }

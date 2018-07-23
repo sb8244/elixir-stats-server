@@ -15,8 +15,22 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
-      }
+        loader: require.resolve('babel-loader')
+      },
+      {
+        test: /\.css$/,
+        use: [
+          require.resolve('style-loader'),
+          require.resolve('css-loader')
+        ]
+      },
+      {
+        test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.woff$/, /\.woff2$/, /\.png$/, /\.svg$/],
+        loader: require.resolve('file-loader'),
+        options: {
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      },
     ]
   },
   plugins: [
