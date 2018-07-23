@@ -21,10 +21,11 @@ defmodule StatsServerWeb.ClientChannel do
     {:reply, {:ok, %{application_names: Config.application_names()}}, socket}
   end
 
-  def handle_in("dispatch_command", %{"application_name" => app_name, "command_id" => id, "encrypted_command" => command}, socket) do
+  def handle_in("dispatch_command", %{"application_name" => app_name, "command_id" => id, "encrypted_command" => command, "server_ids" => server_ids}, socket) do
     server_params = %{
       command_id: id,
-      encrypted_command: command
+      encrypted_command: command,
+      server_ids: server_ids
     }
 
     StatsServerWeb.Endpoint.broadcast("server:#{app_name}", "dispatch_command", server_params)

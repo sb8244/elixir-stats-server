@@ -18,8 +18,10 @@ defmodule StatsServerWeb.ServerChannel do
     {:noreply, socket}
   end
 
-  def handle_out("dispatch_command", payload = %{command_id: _, encrypted_command: _}, socket) do
-    push(socket, "dispatch_command", payload)
+  def handle_out("dispatch_command", payload = %{command_id: _, encrypted_command: _, server_ids: server_ids}, socket = %{assigns: %{server_id: server_id}}) do
+    if length(server_ids) == 0 or server_id in server_ids do
+      push(socket, "dispatch_command", payload)
+    end
 
     {:noreply, socket}
   end

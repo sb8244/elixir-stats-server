@@ -48,7 +48,25 @@ defmodule StatsServerWeb.ServerChannelTest do
   describe "handle_out dispatch_command" do
     test "the socket is pushed the command" do
       socket = start_socket()
-      broadcast_from!(socket, "dispatch_command", %{command_id: "a", encrypted_command: "b"})
+      broadcast_from!(socket, "dispatch_command", %{command_id: "a", encrypted_command: "b", server_ids: []})
+      assert_push("dispatch_command", %{command_id: "a", encrypted_command: "b"})
+    end
+
+    test "the socket is pushed the command if server_ids is []" do
+      socket = start_socket()
+      broadcast_from!(socket, "dispatch_command", %{command_id: "a", encrypted_command: "b", server_ids: []})
+      assert_push("dispatch_command", %{command_id: "a", encrypted_command: "b"})
+    end
+
+    test "the socket is not pushed the command if server_ids doesn't include this server_id" do
+      socket = start_socket()
+      broadcast_from!(socket, "dispatch_command", %{command_id: "a", encrypted_command: "b", server_ids: ["nope"]})
+      refute_push("dispatch_command", %{command_id: "a", encrypted_command: "b"})
+    end
+
+    test "the socket is pushed the command if server_ids includes this server_id" do
+      socket = start_socket()
+      broadcast_from!(socket, "dispatch_command", %{command_id: "a", encrypted_command: "b", server_ids: ["a", "test"]})
       assert_push("dispatch_command", %{command_id: "a", encrypted_command: "b"})
     end
   end
