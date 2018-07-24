@@ -26,7 +26,7 @@ defmodule StatsServer.Application do
 
   def children(:dev) do
     secret = StatsServer.Config.server_socket_authentication_secret()
-    url = "ws://localhost:4040/server_socket/websocket"
+    url = "ws://localhost:4050/server_socket/websocket"
 
     [
       {StatsAgent.Socket, [application_name: "MockServer", authentication_secret: secret, encryption_key: "secret", url: url]},
