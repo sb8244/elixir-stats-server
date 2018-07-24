@@ -15,10 +15,6 @@ defmodule StatsServerWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
+    get("/health", HealthController, :show)
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", StatsServerWeb do
-  #   pipe_through :api
-  # end
 end
