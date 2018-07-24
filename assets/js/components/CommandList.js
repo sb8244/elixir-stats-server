@@ -6,8 +6,14 @@ import { CollectorStateContext } from './CollectorState'
 import { ServerListStateContext } from './ServerListState'
 import { allSystemStats, processCountStats, processList } from '../commands'
 import { CHART_TAB, TEXTS_TAB } from './Collector'
+import { clearCredentials } from '../credentials'
 
 import observer from './observer'
+
+function clearCredentialsAndReload() {
+  clearCredentials()
+  window.location.reload()
+}
 
 function dispatchCommand(channel, selectedApplicationNames, selectedServerIds, addHistory) {
   return (commandGenerator, commandTitle, execFn) => () => {
@@ -56,6 +62,7 @@ export default ({ channel, selectedApplicationNames }) => (
 
                       <Button basic color='red' fluid onClick={() => confirmDeletion(clearData)}>Clear Charts</Button>
                       <Button basic color='red' fluid onClick={() => confirmDeletion(clearPlainTextLogs)}>Clear Text Data</Button>
+                      <Button basic color='red' fluid onClick={() => confirmDeletion(clearCredentialsAndReload)}>Clear Credentials</Button>
                     </div>
                   </div>
                 )

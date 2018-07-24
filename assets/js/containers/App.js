@@ -7,9 +7,9 @@ import ApplicationList from '../components/ApplicationList'
 import Collector from '../components/Collector'
 import CollectorState from '../components/CollectorState'
 import CommandHistoryState from '../components/CommandHistoryState'
+import Socket from '../components/Socket'
 
 import '../../css/app.css'
-import 'semantic-ui-css/semantic.min.css'
 
 export default class Test extends Component {
   constructor(props) {
@@ -26,25 +26,26 @@ export default class Test extends Component {
   }
 
   render() {
-    const { channel } = this.props;
     const { selectedApplicationNames } = this.state;
 
     return (
       <div className="app-container">
-        <CommandHistoryState>
-          <CollectorState channel={channel}>
-            <ServerListState channel={channel}>
-              <div className="app-sidebar">
-                <ServerList />
-                <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
-                <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
-              </div>
-              <div className="app-content">
-                <Collector />
-              </div>
-            </ServerListState>
-          </CollectorState>
-        </CommandHistoryState>
+        <Socket render={({ channel }) => (
+          <CommandHistoryState>
+            <CollectorState channel={channel}>
+              <ServerListState channel={channel}>
+                <div className="app-sidebar">
+                  <ServerList />
+                  <ApplicationList channel={channel} setApplicationNames={this.setApplicationNames.bind(this)} />
+                  <CommandList channel={channel} selectedApplicationNames={selectedApplicationNames} />
+                </div>
+                <div className="app-content">
+                  <Collector />
+                </div>
+              </ServerListState>
+            </CollectorState>
+          </CommandHistoryState>
+        )} />
       </div>
     )
   }

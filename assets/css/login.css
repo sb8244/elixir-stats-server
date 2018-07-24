@@ -1,0 +1,11 @@
+.login-wrapper {
+  height: 100%;
+}
+
+.login-column {
+  max-width: 450px;
+}
+
+.login-form {
+  text-align: left;
+}

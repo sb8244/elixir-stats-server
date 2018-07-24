@@ -1,7 +1,16 @@
 import aesjs from 'aes-js'
 import { sha256 } from 'js-sha256'
 
+import { fetchCredentials } from './credentials'
 import { stringToAsciiByteArray, asciiByteArrayToString, randomBytes } from './encryption/helpers'
+
+function secretHash() {
+  const credentials = fetchCredentials()
+
+  if (credentials.encryptionSecret) {
+    return sha256.array(credentials.encryptionSecret)
+  }
+}
 
 export function decryptPayload(encryptedPayload) {
   const split = encryptedPayload.split('--')
@@ -11,7 +20,7 @@ export function decryptPayload(encryptedPayload) {
   const base64Iv = split[0];
   const base64Encrypted = split[1];
 
-  const hash = sha256.array('secret')
+  const hash = secretHash()
   const iv = stringToAsciiByteArray(atob(base64Iv))
   const encryptedBytes = stringToAsciiByteArray(atob(base64Encrypted))
   const aesCbc = new aesjs.ModeOfOperation.cbc(hash, iv)
@@ -23,7 +32,7 @@ export function decryptPayload(encryptedPayload) {
 }
 
 export function encryptPayload(payload) {
-  const hash = sha256.array('secret')
+  const hash = secretHash()
   const iv = randomBytes(16);
   const textBytes = aesjs.utils.utf8.toBytes(payload);
   const paddedBytesTo16 = aesjs.padding.pkcs7.pad(textBytes);
