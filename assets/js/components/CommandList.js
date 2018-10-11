@@ -2,13 +2,15 @@ import React from 'react'
 import { Button } from 'semantic-ui-react'
 
 import { CommandHistoryStateContext } from './CommandHistoryState'
+import { CommandArgumentStateContext } from './CommandArgumentState'
 import { CollectorStateContext } from './CollectorState'
 import { ServerListStateContext } from './ServerListState'
-import { allSystemStats, processCountStats, processList } from '../commands'
+import { allSystemStats, processList } from '../commands'
 import { CHART_TAB, TEXTS_TAB } from './Collector'
 import { clearCredentials } from '../credentials'
 
 import observer from './observer'
+import { CommandArguments } from './CommandArguments';
 
 function clearCredentialsAndReload() {
   clearCredentials()
@@ -16,12 +18,12 @@ function clearCredentialsAndReload() {
 }
 
 function dispatchCommand(channel, selectedApplicationNames, selectedServerIds, addHistory) {
-  return (commandGenerator, commandTitle, execFn) => () => {
+  return (commandGenerator, commandTitle, execFn, argList) => () => {
     selectedApplicationNames.forEach((applicationName) => {
       const command = Object.assign({
         application_name: applicationName,
         server_ids: selectedServerIds
-      }, commandGenerator())
+      }, commandGenerator(argList))
 
       channel.push("dispatch_command", command)
       addHistory({ commandId: command.command_id, commandTitle })
@@ -41,38 +43,54 @@ function changeCollectorTab(tab) {
 }
 
 export default ({ channel, selectedApplicationNames }) => (
-  <ServerListStateContext.Consumer>
+  <CommandArgumentStateContext.Consumer>
   {
-    ({ selectedServerIds }) => (
-      <CollectorStateContext.Consumer>
-        {
-          ({ clearData, clearPlainTextLogs }) => (
-            <CommandHistoryStateContext.Consumer>
+    ({ argumentMap, showArguments, toggleShowArguments, setArguments }) => (
+      <ServerListStateContext.Consumer>
+      {
+        ({ selectedServerIds }) => (
+          <CollectorStateContext.Consumer>
             {
-              ({ addHistory }) => {
-                const disabled = selectedApplicationNames.length === 0
-                const dispatch = dispatchCommand(channel, selectedApplicationNames, selectedServerIds, addHistory)
+              ({ clearData, clearPlainTextLogs }) => (
+                <CommandHistoryStateContext.Consumer>
+                {
+                  ({ addHistory }) => {
+                    const disabled = selectedApplicationNames.length === 0
+                    const dispatch = dispatchCommand(channel, selectedApplicationNames, selectedServerIds, addHistory)
 
-                return (
-                  <div className="command-list-wrapper">
-                    <div className="command-list">
-                      <Button disabled={disabled} basic fluid onClick={dispatch(allSystemStats, 'Server Stats', changeCollectorTab(CHART_TAB))}>Server Stats</Button>
-                      <Button disabled={disabled} basic fluid onClick={dispatch(processCountStats, 'Process Counts', changeCollectorTab(CHART_TAB))}>Process Counts</Button>
-                      <Button disabled={disabled} basic fluid onClick={dispatch(processList, 'Process List', changeCollectorTab(TEXTS_TAB))}>Process List</Button>
+                    return (
+                      <div className="command-list-wrapper">
+                        <div className="command-list">
+                          <Button disabled={disabled} basic fluid onClick={dispatch(allSystemStats, 'Server Stats', changeCollectorTab(CHART_TAB), [])}>Server Stats</Button>
 
-                      <Button basic color='red' fluid onClick={() => confirmDeletion(clearData)}>Clear Charts</Button>
-                      <Button basic color='red' fluid onClick={() => confirmDeletion(clearPlainTextLogs)}>Clear Text Data</Button>
-                      <Button basic color='red' fluid onClick={() => confirmDeletion(clearCredentialsAndReload)}>Clear Credentials</Button>
-                    </div>
-                  </div>
-                )
-              }
+                          <div>
+                            <div style={{ display: 'flex', marginBottom: '5px' }}>
+                              <Button style={{ flexGrow: 1 }} disabled={disabled} basic onClick={dispatch(processList, 'Process List', changeCollectorTab(TEXTS_TAB), argumentMap['processList'])}>Process List</Button>
+                              <Button disabled={disabled} basic onClick={() => toggleShowArguments('processList')}>Args</Button>
+                            </div>
+                            {
+                              showArguments['processList'] ?
+                                <CommandArguments argumentList={argumentMap['processList']} setArguments={setArguments('processList')} /> :
+                                null
+                            }
+                          </div>
+
+                          <Button basic color='red' fluid onClick={() => confirmDeletion(clearData)}>Clear Charts</Button>
+                          <Button basic color='red' fluid onClick={() => confirmDeletion(clearPlainTextLogs)}>Clear Text Data</Button>
+                          <Button basic color='red' fluid onClick={() => confirmDeletion(clearCredentialsAndReload)}>Clear Credentials</Button>
+                        </div>
+                      </div>
+                    )
+                  }
+                }
+                </CommandHistoryStateContext.Consumer>
+              )
             }
-            </CommandHistoryStateContext.Consumer>
-          )
-        }
-      </CollectorStateContext.Consumer>
+          </CollectorStateContext.Consumer>
+        )
+      }
+      </ServerListStateContext.Consumer>
     )
   }
-  </ServerListStateContext.Consumer>
+  </CommandArgumentStateContext.Consumer>
 )

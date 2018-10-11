@@ -1,23 +1,29 @@
 import { encryptPayload } from './encryption'
 
-export function allSystemStats() {
+export function allSystemStats(argList) {
   return {
     command_id: randomCommandId(),
-    encrypted_command: encryptPayload('all_system_stats')
+    encrypted_command: encryptPayload(getPayload('all_system_stats', argList))
   }
 }
 
-export function processCountStats() {
+export function processList(argList) {
   return {
     command_id: randomCommandId(),
-    encrypted_command: encryptPayload('process_count_stats')
+    encrypted_command: encryptPayload(getPayload('process_list', argList))
   }
 }
 
-export function processList() {
-  return {
-    command_id: randomCommandId(),
-    encrypted_command: encryptPayload('process_list')
+function getPayload(name, argList) {
+  const args = argList
+    .filter(({ key, value }) => key && value)
+    .map(({ key, value }) => `${key}=${value}`)
+    .join("&")
+
+  if (args) {
+    return `${name}|${args}`
+  } else {
+    return name
   }
 }
 
