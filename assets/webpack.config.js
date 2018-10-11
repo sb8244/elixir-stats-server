@@ -28,7 +28,7 @@ module.exports = {
         test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.woff$/, /\.woff2$/, /\.png$/, /\.svg$/],
         loader: require.resolve('file-loader'),
         options: {
-          name: 'static/media/[name].[hash:8].[ext]',
+          name: '../static/media/[name].[hash:8].[ext]',
         },
       },
     ]
